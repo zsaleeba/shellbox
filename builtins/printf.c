@@ -58,6 +58,7 @@ static char  **gargv;
 
 #include "bltin.h"
 #include "system.h"
+#include "output.h"
 
 #define PF(f, func) { \
 	switch ((char *)param - (char *)array) { \

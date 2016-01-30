@@ -209,7 +209,7 @@ out:
 			}
 			if (pgrp == getpgrp())
 				break;
-			killpg(0, SIGTTIN);
+			killpg_gosh(0, SIGTTIN);
 		} while (1);
 		initialpgrp = pgrp;
 
@@ -390,7 +390,7 @@ restartjob(struct job *jp, int mode)
 	pgid = jp->ps->pid;
 	if (mode == FORK_FG)
 		xtcsetpgrp(ttyfd, pgid);
-	killpg(pgid, SIGCONT);
+	killpg_gosh(pgid, SIGCONT);
 	ps = jp->ps;
 	i = jp->nprocs;
 	do {
@@ -1136,7 +1136,7 @@ waitproc(int block, int *status)
 
 	do {
 		gotsigchld = 0;
-		err = wait3(status, flags, NULL);
+		err = waitpid(-1, status, flags);
 		if (err || !block)
 			break;
 

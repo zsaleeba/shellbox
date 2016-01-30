@@ -2,31 +2,29 @@ SRCS	= alias.c arith_yacc.c arith_yylex.c cd.c builtins.c error.c \
 	  eval.c exec.c expand.c histedit.c init.c input.c jobs.c \
 	  mail.c main.c memalloc.c miscbltin.c mystring.c nodes.c \
 	  options.c output.c parser.c redir.c show.c signames.c \
-	  system.c trap.c var.c
-TARGET	= gosh
-CFLAGS	= -Wall
+	  syntax.c system.c trap.c var.c
+TARGET	= gosh_shell.a
+CFLAGS	= -Wall -I.. -include ../config.h
 
-BINDIR  ?= ../bin
 OBJDIR  ?= ../obj
-GOBJDIR= $(OBJDIR)/gosh
-OBJS	= $(SRCS:%c=$(GOBJDIR)/%o)
+GOBJDIR	= $(OBJDIR)/gosh/shell
+OBJS	= $(SRCS:%.c=$(GOBJDIR)/%.o)
 
-all:	$(BINDIR)/$(TARGET)
+all:	$(GOBJDIR)/$(TARGET)
 
-$(BINDIR)/$(TARGET): $(BINDIR) $(GOBJDIR) $(OBJS)
-	$(CC) $(CFLAGS) -o $(BINDIR)/$(TARGET) $(OBJS)
+$(GOBJDIR)/$(TARGET): $(GOBJDIR) $(OBJS)
+	$(AR) r $(GOBJDIR)/$(TARGET) $(OBJS)
 
 $(GOBJDIR)/%.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
-
-$(BINDIR):
-	mkdir -p $(BINDIR)
 
 $(GOBJDIR):
 	mkdir -p $(GOBJDIR)
 
 regenerate: $(GOBJDIR)/mkinit $(GOBJDIR)/mknodes $(GOBJDIR)/mksignames $(GOBJDIR)/mksyntax
 	sh mktokens
+	$(CC) $(CFLAGS) -E -x c -o builtins.def builtins.def.in
+	sh mkbuiltins builtins.def
 	$(GOBJDIR)/mkinit input.c output.c trap.c var.c
 	$(GOBJDIR)/mknodes nodetypes nodes.c.pat
 	$(GOBJDIR)/mksignames
@@ -48,6 +46,6 @@ clean:
 	rm -f $(TARGET) $(OBJS) *~ $(GOBJDIR)/mkinit $(GOBJDIR)/mknodes $(GOBJDIR)/mksignames $(GOBJDIR)/mksyntax
 
 depend:
-	gcc -MM $(SRCS) | sed 's|[^.]\{1,\}\.o:|$(GOBJDIR)/&|' >.deps.mk
+	gcc -MM $(SRCS) | sed 's|[^.]\{1,\}\.o:|$(GOBJDIR)/&|' >$(GOBJDIR)/deps.mk
 
--include dep.mk
+-include $(GOBJDIR)/deps.mk

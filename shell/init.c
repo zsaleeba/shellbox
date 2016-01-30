@@ -11,6 +11,7 @@
 #include "output.h"
 #include "memalloc.h"
 #include "trap.h"
+#include "parser.h"
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -83,7 +83,7 @@ void *bsearch(const void *, const void *, size_t, size_t,
 #endif
 
 #ifndef HAVE_KILLPG
-static inline int killpg(pid_t pid, int signal)
+static inline int killpg_gosh(pid_t pid, int signal)
 {
 #ifdef DEBUG
 	if (pid < 0)
@@ -91,6 +91,8 @@ static inline int killpg(pid_t pid, int signal)
 #endif
 	return kill(-pid, signal);
 }
+#else
+#define killpg_gosh killpg
 #endif
 
 #ifndef HAVE_SYSCONF

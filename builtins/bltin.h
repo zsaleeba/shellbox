@@ -40,13 +40,13 @@
  * routines to ash routines using defines.
  */
 
-#include "../shell.h"
-#include "../mystring.h"
-#include "../options.h"
+#include "shell.h"
+#include "mystring.h"
+#include "options.h"
 #ifdef SHELL
-#include "../memalloc.h"
-#include "../output.h"
-#include "../error.h"
+#include "memalloc.h"
+#include "output.h"
+#include "error.h"
 #ifndef USE_GLIBC_STDIO
 #undef stdout
 #undef stderr
