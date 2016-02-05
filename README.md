@@ -38,3 +38,20 @@ Commands available:
 | vconfig | vmstat | w | wc | which | who | 
 | whoami | xargs | xxd | yes| | |
 
+Partially implemented:
+
+| Commands | ... | ... | ... | ... | ... |
+| -------- | --- | --- | --- | --- | --- |
+| addgroup | adduser | arp | arping | bootchartd | brctl | 
+| cd | compress | crond | crontab | dd | deallocvt | 
+| delgroup | deluser | dhcp | dhcpd | diff | dumpleases | 
+| exit | expr | fdisk | fold | fsck | ftpget | 
+| ftpput | getty | groupadd | groupdel | gunzip | gzip | 
+| host | iconv | init | ip | ipcrm | ipcs | 
+| klogd | last | logger | lsof | mdev | mke2fs | 
+| modprobe | more | netstat | openvt | ping | route | 
+| sulogin | syslogd | tar | tcpsvd | telnet | telnetd |
+| test | tftp | tftpd | tr | traceroute | udpsvd | 
+| useradd | userdel | vi | watch | xzcat | zcat | 
+
+    
