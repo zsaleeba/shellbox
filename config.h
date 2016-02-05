@@ -12,7 +12,7 @@
 #define HAVE_DECL_ISBLANK 1
 
 /* Define to 1 if you have the `faccessat' function. */
-#define HAVE_FACCESSAT 1
+/* #undef HAVE_FACCESSAT */
 
 /* Define to 1 if you have the `fnmatch' function. */
 /* #undef HAVE_FNMATCH */
@@ -21,7 +21,7 @@
 #define HAVE_GETPWNAM 1
 
 /* Define to 1 if you have the `getrlimit' function. */
-#define HAVE_GETRLIMIT 1
+/* #undef HAVE_GETRLIMIT */
 
 /* Define to 1 if you have the `glob' function. */
 /* #undef HAVE_GLOB */
@@ -33,7 +33,7 @@
 #define HAVE_ISALPHA 1
 
 /* Define to 1 if you have the `killpg' function. */
-#define HAVE_KILLPG 1
+/* #undef HAVE_KILLPG */
 
 /* Define to 1 if you have the <memory.h> header file. */
 #define HAVE_MEMORY_H 1
@@ -45,7 +45,7 @@
 #define HAVE_PATHS_H 1
 
 /* Define to 1 if you have the `sigsetmask' function. */
-#define HAVE_SIGSETMASK 1
+/* #undef HAVE_SIGSETMASK */
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #define HAVE_STDINT_H 1
@@ -72,10 +72,10 @@
 #define HAVE_STRTOD 1
 
 /* Define to 1 if you have the `strtoimax' function. */
-#define HAVE_STRTOIMAX 1
+/* #undef HAVE_STRTOIMAX */
 
 /* Define to 1 if you have the `strtoumax' function. */
-#define HAVE_STRTOUMAX 1
+/* #undef HAVE_STRTOUMAX */
 
 /* Define to 1 if you have the `sysconf' function. */
 #define HAVE_SYSCONF 1
@@ -163,7 +163,7 @@
 /* #undef _PATH_DEVNULL */
 
 /* Define to tty device node path */
-/* #undef _PATH_TTY */
+#define _PATH_TTY "/dev/tty"
 
 /* Define to 2 if the system does not provide POSIX.1 features except with
    this defined. */
@@ -173,17 +173,17 @@
 /* #undef _POSIX_SOURCE */
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef fstat64 */
+#define fstat64 fstat
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef lstat64 */
+#define lstat64 lstat
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef open64 */
+#define open64 open
 
 /* klibc has bsd_signal instead of signal */
 /* #undef signal */
 
 /* 64-bit operations are the same as 32-bit */
-/* #undef stat64 */
+#define stat64 stat
 

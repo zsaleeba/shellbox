@@ -17,7 +17,17 @@ CSRCS = shell/alias.c shell/arith_yacc.c shell/arith_yylex.c \
 	shell/parser.c shell/redir.c shell/show.c \
 	shell/signames.c shell/syntax.c shell/system.c \
 	shell/trap.c shell/var.c \
-	builtins/printf.c builtins/test.c builtins/times.c
+	builtins/printf.c builtins/test.c builtins/times.c \
+	libedit/chared.c libedit/chartype.c libedit/common.c \
+	libedit/el.c libedit/eln.c libedit/emacs.c \
+	libedit/fgetln.c libedit/filecomplete.c libedit/hist.c \
+	libedit/history.c libedit/keymacro.c libedit/map.c \
+	libedit/parse.c libedit/prompt.c libedit/read.c \
+	libedit/readline.c libedit/refresh.c libedit/search.c \
+	libedit/sig.c libedit/strlcat.c libedit/strlcpy.c \
+	libedit/terminal.c libedit/tokenizer.c libedit/tty.c \
+	libedit/unvis.c libedit/vi.c libedit/vis.c \
+	libedit/wcsdup.c
 	
 COBJS = $(CSRCS:%.c=${ARCH}/%.o)
 
