@@ -6,6 +6,7 @@ shellbox is based on the dash shell, toybox command line utilities and the libed
 
 Commands available:
 | acpi | base64 | basename | blkid | blockdev | bunzip2 | 
+| ---- | ------ | -------- | ----- | -------- | ------- | 
 | bzcat | cal | cat | catv | chattr | chgrp | 
 | chmod | chown | chroot | chvt | cksum | clear | 
 | cmp | comm | count | cp | cpio | cut | 
