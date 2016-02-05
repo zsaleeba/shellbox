@@ -5,8 +5,10 @@ shellbox is designed for modern embedded systems with >1MB of FLASH and RAM plus
 shellbox is based on the dash shell, toybox command line utilities and the libedit command line editor.
 
 Commands available:
+
+| Commands | ... | ... | ... | ... | ... |
+| -------- | --- | --- | --- | --- | --- |
 | acpi | base64 | basename | blkid | blockdev | bunzip2 | 
-| ---- | ------ | -------- | ----- | -------- | ------- | 
 | bzcat | cal | cat | catv | chattr | chgrp | 
 | chmod | chown | chroot | chvt | cksum | clear | 
 | cmp | comm | count | cp | cpio | cut | 
