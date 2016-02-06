@@ -2,7 +2,7 @@ shellbox is a shell with built-in commands. It was originally designed to be use
 
 shellbox is designed for modern embedded systems with >1MB of FLASH and RAM plus a usable filesystem and a fairly complete C library implementation. Since many embedded system don't have the ability to exec() programs off the filesystem it doesn't require a working exec() call.
 
-shellbox is based on the dash shell, toybox command line utilities and the libedit command line editor.
+shellbox is based on the dash shell, toybox command line utilities and the libedit command line editor. It's currently under development and is not suitable for use.
 
 Commands available:
 
