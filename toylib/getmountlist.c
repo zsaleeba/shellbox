@@ -4,6 +4,8 @@
  */
 
 #include "toys.h"
+
+#ifndef __rtems__
 #include <mntent.h>
 
 // Realloc *old with oldstring,newstring
@@ -172,3 +174,4 @@ struct mtab_list *xgetmountlist(char *path)
 
   return mtlist;
 }
+#endif

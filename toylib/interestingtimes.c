@@ -60,7 +60,9 @@ int set_terminal(int fd, int raw, struct termios *old)
 
   // Any key unblocks output, swap CR and NL on input
   termio.c_iflag = IXANY|ICRNL|INLCR;
+#ifndef __rtems__
   if (toys.which->flags & TOYFLAG_LOCALE) termio.c_iflag |= IUTF8;
+#endif
 
   // Output appends CR to NL, does magic undocumented postprocessing
   termio.c_oflag = ONLCR|OPOST;
@@ -80,6 +82,7 @@ int set_terminal(int fd, int raw, struct termios *old)
   return tcsetattr(fd, TCSANOW, &termio);
 }
 
+#ifndef __rtems__
 // Scan stdin for a keypress, parsing known escape sequences
 // Returns: 0-255=literal, -1=EOF, -2=NONE, 256-...=index into seq
 // scratch space is necessary because last char of !seq could start new seq
@@ -133,6 +136,7 @@ int scan_key(char *scratch, int block)
 
   return i;
 }
+#endif
 
 void tty_esc(char *s)
 {

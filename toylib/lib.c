@@ -687,7 +687,9 @@ static struct signame signames[] = {
   SIGNIFY(FPE), SIGNIFY(HUP), SIGNIFY(ILL), SIGNIFY(INT), SIGNIFY(KILL),
   SIGNIFY(PIPE), SIGNIFY(QUIT), SIGNIFY(SEGV), SIGNIFY(TERM),
   SIGNIFY(USR1), SIGNIFY(USR2), SIGNIFY(SYS), SIGNIFY(TRAP),
+#ifndef __rtems__
   SIGNIFY(VTALRM), SIGNIFY(XCPU), SIGNIFY(XFSZ),
+#endif
 
   // Start of non-terminal signals
 

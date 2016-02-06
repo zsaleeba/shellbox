@@ -13,6 +13,7 @@ void xsetsockopt(int fd, int level, int opt, void *val, socklen_t len)
   if (-1 == setsockopt(fd, level, opt, val, len)) perror_exit("setsockopt");
 }
 
+#ifndef __rtems__
 int xconnect(char *host, char *port, int family, int socktype, int protocol,
              int flags)
 {
@@ -42,3 +43,4 @@ int xconnect(char *host, char *port, int family, int socktype, int protocol,
 
   return fd;
 }
+#endif

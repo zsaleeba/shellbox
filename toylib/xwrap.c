@@ -251,14 +251,14 @@ int xpclose_both(pid_t pid, int *pipes)
 }
 
 // Wrapper to xpopen with a pipe for just one of stdin/stdout
-pid_t xpopen(char **argv, int *pipe, int stdout)
+pid_t xpopen(char **argv, int *pipe, int stdout_)
 {
   int pipes[2], pid;
 
-  pipes[!stdout] = -1;
-  pipes[!!stdout] = 0;
+  pipes[!stdout_] = -1;
+  pipes[!!stdout_] = 0;
   pid = xpopen_both(argv, pipes);
-  *pipe = pid ? pipes[!!stdout] : -1;
+  *pipe = pid ? pipes[!!stdout_] : -1;
 
   return pid;
 }
@@ -346,13 +346,13 @@ void xreadall(int fd, void *buf, size_t len)
   if (len != readall(fd, buf, len)) perror_exit("xreadall");
 }
 
-// There's no xwriteall(), just xwrite().  When we read, there may or may not
+// There's no xwriteall(), just txwrite().  When we read, there may or may not
 // be more data waiting.  When we write, there is data and it had better go
 // somewhere.
 
-void xwrite(int fd, void *buf, size_t len)
+void txwrite(int fd, void *buf, size_t len)
 {
-  if (len != writeall(fd, buf, len)) perror_exit("xwrite");
+  if (len != writeall(fd, buf, len)) perror_exit("txwrite");
 }
 
 // Die if lseek fails, probably due to being called on a pipe.
@@ -647,7 +647,7 @@ void xpidfile(char *name)
 
   if (i == 3) error_exit("xpidfile %s", name);
 
-  xwrite(fd, spid, sprintf(spid, "%ld\n", (long)getpid()));
+  txwrite(fd, spid, sprintf(spid, "%ld\n", (long)getpid()));
   close(fd);
 }
 
@@ -661,7 +661,7 @@ void xsendfile(int in, int out)
   for (;;) {
     len = xread(in, libbuf, sizeof(libbuf));
     if (len<1) break;
-    xwrite(out, libbuf, len);
+    txwrite(out, libbuf, len);
   }
 }
 

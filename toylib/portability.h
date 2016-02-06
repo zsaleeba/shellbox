@@ -5,11 +5,13 @@
 // and in portability.c
 
 // For musl
+#ifndef _ALL_SOURCE
 #define _ALL_SOURCE
+#endif
 
 // Test for gcc (using compiler builtin #define)
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__rtems__)
 #define noreturn	__attribute__((noreturn))
 #if CFG_TOYBOX_DEBUG
 #define printf_format	__attribute__((format(printf, 1, 2)))
@@ -26,7 +28,7 @@
 
 // This isn't in the spec, but it's how we determine what libc we're using.
 
-#include <features.h>
+/* #include <features.h> */
 
 // Types various replacement prototypes need
 #include <sys/types.h>
@@ -169,7 +171,7 @@ char *dirname(char *path);
 
 // Work out how to do endianness
 
-#ifndef __APPLE__
+#if !defined(__APPLE__) && !defined(__rtems__)
 #include <byteswap.h>
 #include <endian.h>
 
@@ -216,7 +218,9 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 
 // Linux headers not listed by POSIX or LSB
 #include <sys/mount.h>
+#ifndef __rtems__
 #include <sys/swap.h>
+#endif
 
 // Android is missing some headers and functions
 // "generated/config.h" is included first

@@ -5,14 +5,14 @@
 #if !CFG_TOYBOX_HELP
 void show_help(FILE *out) {;}
 #else
-#include "generated/help.h"
+#include "geninc/help.h"
 
 #undef NEWTOY
 #undef OLDTOY
 #define NEWTOY(name,opt,flags) help_##name "\0"
 #define OLDTOY(name,oldname,flags) "\xff" #oldname "\0"
 static char *help_data =
-#include "generated/newtoys.h"
+#include "geninc/newtoys.h"
 ;
 
 void show_help(FILE *out)

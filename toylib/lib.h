@@ -105,7 +105,7 @@ void xexec(char **argv);
 pid_t xpopen_both(char **argv, int *pipes);
 int xwaitpid(pid_t pid);
 int xpclose_both(pid_t pid, int *pipes);
-pid_t xpopen(char **argv, int *pipe, int stdout);
+pid_t xpopen(char **argv, int *pipe, int stdout_);
 pid_t xpclose(pid_t pid, int pipe);
 int xrun(char **argv);
 int xpspawn(char **argv, int*pipes);
@@ -186,7 +186,9 @@ void crc_init(unsigned int *crc_table, int little_endian);
 void base64_init(char *p);
 int yesno(int def);
 int qstrcmp(const void *a, const void *b);
+#ifndef __rtems__
 int xpoll(struct pollfd *fds, int nfds, int timeout);
+#endif
 
 #define HR_SPACE 1 // Space between number and units
 #define HR_B     2 // Use "B" for single byte units
@@ -257,4 +259,4 @@ pid_t xvforkwrap(pid_t pid);
 #define XVFORK() xvforkwrap(vfork())
 
 // Functions in need of further review/cleanup
-#include "lib/pending.h"
+#include "toylib/pending.h"
