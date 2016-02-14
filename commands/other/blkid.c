@@ -149,7 +149,10 @@ void blkid_main(void)
 
       sprintf(device, "/dev/%.20s", name);
       if (-1 == (fd = open(device, O_RDONLY))) {
-        if (errno != ENOMEDIUM) perror_msg("%s", device);
+#ifdef ENOMEDIUM
+        if (errno != ENOMEDIUM) 
+#endif
+                perror_msg("%s", device);
       } else {
         do_blkid(fd, device);
         close(fd);

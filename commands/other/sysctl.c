@@ -57,7 +57,7 @@ static int write_key(char *path, char *key, char *value)
 
     return 0;
   }
-  xwrite(fd, value, strlen(value));
+  txwrite(fd, value, strlen(value));
   xclose(fd);
 
   return 1;

@@ -21,8 +21,13 @@ GLOBALS(
 )
 
 void renice_main(void) {
-  int which = (toys.optflags & FLAG_g) ? PRIO_PGRP :
+  int which = 
+#ifdef PRIO_PGRP
+              (toys.optflags & FLAG_g) ? PRIO_PGRP :
               ((toys.optflags & FLAG_u) ? PRIO_USER : PRIO_PROCESS);
+#else
+                  0;
+#endif
   char **arg;
 
   for (arg = toys.optargs; *arg; arg++) {

@@ -182,7 +182,7 @@ alloc:
 	if (nleft > len)
 		goto buffered;
 
-	if ((xwrite(dest->fd, p, len))) {
+	if ((dxwrite(dest->fd, p, len))) {
 err:
 		dest->flags |= OUTPUT_ERR;
 	}
@@ -242,7 +242,7 @@ flushout(struct output *dest)
 	if (!len || dest->fd < 0)
 		return;
 	dest->nextc = dest->buf;
-	if ((xwrite(dest->fd, dest->buf, len)))
+	if ((dxwrite(dest->fd, dest->buf, len)))
 		dest->flags |= OUTPUT_ERR;
 #endif
 }
@@ -323,7 +323,7 @@ doformat(struct output *dest, const char *f, va_list ap)
  */
 
 int
-xwrite(int fd, const void *p, size_t n)
+dxwrite(int fd, const void *p, size_t n)
 {
 	const char *buf = p;
 

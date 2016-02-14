@@ -310,7 +310,7 @@ openhere(union node *redir)
 
 	len = strlen(p);
 	if (len <= PIPESIZE) {
-		xwrite(pip[1], p, len);
+		dxwrite(pip[1], p, len);
 		goto out;
 	}
 
@@ -323,7 +323,7 @@ openhere(union node *redir)
 		signal(SIGTSTP, SIG_IGN);
 #endif
 		signal(SIGPIPE, SIG_DFL);
-		xwrite(pip[1], p, len);
+		dxwrite(pip[1], p, len);
 		_exit(0);
 	}
 out:

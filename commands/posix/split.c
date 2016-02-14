@@ -83,7 +83,7 @@ static void do_split(int infd, char *in)
       if (j > bytesleft) j = bytesleft;
       bytesleft -= j;
     }
-    xwrite(outfd, toybuf+pos, j);
+    txwrite(outfd, toybuf+pos, j);
     pos += j;
   }
 

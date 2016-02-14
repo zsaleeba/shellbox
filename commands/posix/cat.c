@@ -86,7 +86,7 @@ static void do_cat(int fd, char *name)
         }
         xputc(c);
       }
-    } else xwrite(1, toybuf, len);
+    } else txwrite(1, toybuf, len);
   }
 }
 

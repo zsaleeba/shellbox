@@ -209,7 +209,7 @@ void netcat_main(void)
       if (pollfds[i].revents & POLLIN) {
         int len = read(pollfds[i].fd, toybuf, sizeof(toybuf));
         if (len<1) goto dohupnow;
-        xwrite(i ? pollfds[0].fd : 1, toybuf, len);
+        txwrite(i ? pollfds[0].fd : 1, toybuf, len);
       } else if (pollfds[i].revents & POLLHUP) {
 dohupnow:
         // Close half-connection.  This is needed for things like

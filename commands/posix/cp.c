@@ -418,7 +418,7 @@ static inline int cp_flag_v(void) { return FLAG_v; };
 // Switch to install's flag context
 #define CLEANUP_cp
 #define FOR_install
-#include <generated/flags.h>
+#include <geninc/flags.h>
 
 static int install_node(struct dirtree *try)
 {

@@ -200,7 +200,7 @@ static void transfer_file(int local_fd, int remote_fd)
       wfd = (TT.isget)?local_fd:remote_fd;
 
   if (rfd < 0 || wfd < 0) error_exit("Error in file creation:");
-  while ((len = xread(rfd, toybuf, sizeof(toybuf)))) xwrite(wfd, toybuf, len);
+  while ((len = xread(rfd, toybuf, sizeof(toybuf)))) txwrite(wfd, toybuf, len);
 }
 
 static void get_file(char *l_filename, char *r_filename)

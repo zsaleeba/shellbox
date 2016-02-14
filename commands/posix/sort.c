@@ -387,7 +387,7 @@ void sort_main(void)
     unsigned i = strlen(s);
 
     if (!(toys.optflags&FLAG_z)) s[i] = '\n';
-    xwrite(fd, s, i+1);
+    txwrite(fd, s, i+1);
     if (CFG_TOYBOX_FREE) free(s);
   }
 

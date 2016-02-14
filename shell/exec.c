@@ -819,6 +819,14 @@ describe_command(out, command, path, verbose)
 		}
 		break;
 
+	case CMDTOYCMD:
+		if (verbose) {
+			outstr(" is a compiled-in command", out);
+		} else {
+			outstr(command, out);
+		}
+		break;
+
 	default:
 		if (verbose) {
 			outstr(": not found\n", out);

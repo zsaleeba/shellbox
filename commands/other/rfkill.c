@@ -69,7 +69,7 @@ void rfkill_main(void)
       rfevent.type = tid;
       rfevent.op = RFKILL_OP_CHANGE_ALL;
     }
-    xwrite(fd, &rfevent, sizeof(rfevent));
+    txwrite(fd, &rfevent, sizeof(rfevent));
   } else {
     // show list.
     while (sizeof(rfevent) == readall(fd, &rfevent, sizeof(rfevent))) {

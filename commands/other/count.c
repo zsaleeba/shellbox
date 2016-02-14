@@ -25,8 +25,8 @@ void count_main(void)
     len = xread(0, toybuf, sizeof(toybuf));
     if (!len) break;
     size += len;
-    xwrite(1, toybuf, len);
-    xwrite(2, buf, sprintf(buf, "%"PRIu64" bytes\r", size));
+    txwrite(1, toybuf, len);
+    txwrite(2, buf, sprintf(buf, "%"PRIu64" bytes\r", size));
   }
-  xwrite(2, "\n", 1);
+  txwrite(2, "\n", 1);
 }

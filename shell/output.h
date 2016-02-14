@@ -78,7 +78,7 @@ int fmtstr(char *, size_t, const char *, ...)
 #ifndef USE_GLIBC_STDIO
 void doformat(struct output *, const char *, va_list);
 #endif
-int xwrite(int, const void *, size_t);
+int dxwrite(int, const void *, size_t);
 #ifdef notyet
 #ifdef USE_GLIBC_STDIO
 void initstreams(void);

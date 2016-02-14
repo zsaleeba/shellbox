@@ -63,7 +63,7 @@ void dmesg_main(void)
     // Write result. The odds of somebody requesting a buffer of size 3 and
     // getting "<1>" are remote, but don't segfault if they do.
     if (to != data) {
-      xwrite(1, data, to-data);
+      txwrite(1, data, to-data);
       if (to[-1] != '\n') xputc('\n');
     }
     if (CFG_TOYBOX_FREE) free(data);

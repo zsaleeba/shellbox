@@ -119,7 +119,7 @@ FILE *xfdopen(int fd, char *mode);
 FILE *xfopen(char *path, char *mode);
 size_t xread(int fd, void *buf, size_t len);
 void xreadall(int fd, void *buf, size_t len);
-void xwrite(int fd, void *buf, size_t len);
+void txwrite(int fd, void *buf, size_t len);
 off_t xlseek(int fd, off_t offset, int whence);
 char *xreadfile(char *name, char *buf, off_t len);
 int xioctl(int fd, int request, void *data);

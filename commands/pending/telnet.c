@@ -102,7 +102,7 @@ static void handle_esc(void)
   char input;
 
   if(toys.signal && TT.term_ok) tcsetattr(0, TCSADRAIN, &TT.raw_term);
-  xwrite(1,"\r\nConsole escape. Commands are:\r\n\n"
+  txwrite(1,"\r\nConsole escape. Commands are:\r\n\n"
       " l  go to line mode\r\n"
       " c  go to character mode\r\n"
       " z  suspend telnet\r\n"
@@ -145,7 +145,7 @@ static void handle_esc(void)
   default: break;
   }
 
-  xwrite(1, "continuing...\r\n", 15);
+  txwrite(1, "continuing...\r\n", 15);
   if (toys.signal && TT.term_ok) tcsetattr(0, TCSADRAIN, &TT.def_term);
 
 ret:
@@ -259,7 +259,7 @@ static int read_server(int len)
     }
   } while (TT.pbuff < len);
 
-  if (i) xwrite(STDIN_FILENO, toybuf, i);
+  if (i) txwrite(STDIN_FILENO, toybuf, i);
   return 0;
 }
 
@@ -281,7 +281,7 @@ static void write_server(int len)
     if (*c == IAC) toybuf[i++] = *c; /* IAC -> IAC IAC */
     else if (*c == '\r') toybuf[i++] = '\0'; /* CR -> CR NUL */
   }
-  if(i) xwrite(TT.sfd, toybuf, i);
+  if(i) txwrite(TT.sfd, toybuf, i);
 }
 
 void telnet_main(void)

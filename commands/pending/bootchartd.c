@@ -56,10 +56,10 @@ static void dump_data_in_file(char *fname, int wfd)
   int rfd = open(fname, O_RDONLY);
 
   if (rfd != -1) {
-    xwrite(wfd, TT.buf, strlen(TT.buf));
+    txwrite(wfd, TT.buf, strlen(TT.buf));
     xsendfile(rfd, wfd);
     close(rfd);
-    xwrite(wfd, "\n", 1);
+    txwrite(wfd, "\n", 1);
   }
 }
 

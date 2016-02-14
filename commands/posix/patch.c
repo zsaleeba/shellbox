@@ -71,8 +71,8 @@ static void do_line(void *data)
     char *s = dlist->data+(TT.state>3 ? 1 : 0);
     int i = TT.state == 2 ? 2 : TT.fileout;
 
-    xwrite(i, s, strlen(s));
-    xwrite(i, "\n", 1);
+    txwrite(i, s, strlen(s));
+    txwrite(i, "\n", 1);
   }
 
   if (toys.optflags & FLAG_x)

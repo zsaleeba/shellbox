@@ -39,6 +39,7 @@
 #define CMDNORMAL	0	/* command is an executable program */
 #define CMDFUNCTION	1	/* command is a shell function */
 #define CMDBUILTIN	2	/* command is a shell builtin */
+#define CMDTOYCMD	3	/* command is from the toybox commands */
 
 
 struct cmdentry {
@@ -46,6 +47,7 @@ struct cmdentry {
 	union param {
 		int index;
 		const struct builtincmd *cmd;
+                const struct toy_list *toycmd;
 		struct funcnode *func;
 	} u;
 };

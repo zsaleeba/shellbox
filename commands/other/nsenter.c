@@ -80,7 +80,7 @@ static void write_ugid_map(char *map, unsigned eugid)
 {
   int bytes = sprintf(toybuf, "0 %u 1", eugid), fd = xopen(map, O_WRONLY);
 
-  xwrite(fd, toybuf, bytes);
+  txwrite(fd, toybuf, bytes);
   xclose(fd);
 }
 
@@ -89,7 +89,7 @@ static void handle_r(int euid, int egid)
   int fd;
 
   if ((fd = open("/proc/self/setgroups", O_WRONLY)) >= 0) {
-    xwrite(fd, "deny", 4);
+    txwrite(fd, "deny", 4);
     close(fd);
   }
 

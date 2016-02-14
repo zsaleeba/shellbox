@@ -26,6 +26,7 @@ config WHO
 
 void who_main(void)
 {
+#if CFG_TOYBOX_UTMPX
   struct utmpx *entry;
 
   setutxent();
@@ -45,4 +46,5 @@ void who_main(void)
   }
 
   endutxent();
+#endif
 }

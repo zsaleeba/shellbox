@@ -58,9 +58,9 @@ static void do_dos2unix(int fd, char *name)
       if (x == '\r') catch++;
       else toybuf[out++] = x;
     }
-    xwrite(outfd, toybuf, out);
+    txwrite(outfd, toybuf, out);
   }
-  if (catch) xwrite(outfd, "\r", 1);
+  if (catch) txwrite(outfd, "\r", 1);
 
   if (fd) replace_tempfile(-1, outfd, &TT.tempfile);
 }

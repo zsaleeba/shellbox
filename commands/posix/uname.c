@@ -66,7 +66,7 @@ void uname_main(void)
         *(--c)=' ';
         len++;
       }
-      xwrite(1, c, len);
+      txwrite(1, c, len);
     }
   }
   putchar('\n');

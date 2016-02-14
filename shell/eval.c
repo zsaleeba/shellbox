@@ -60,6 +60,7 @@
 #include "error.h"
 #include "show.h"
 #include "mystring.h"
+#include "toys.h"
 #ifndef SMALL
 #include "myhistedit.h"
 #endif
@@ -92,6 +93,7 @@ STATIC void evalcommand(union node *, int, struct backcmd *);
 STATIC void evalcommand(union node *, int);
 #endif
 STATIC int evalbltin(const struct builtincmd *, int, char **, int);
+STATIC int evaltoycmd(const struct toy_list *, int, char **, int);
 STATIC int evalfun(struct funcnode *, int, char **, int);
 STATIC void prehash(union node *);
 STATIC int eprintlist(struct output *, struct strlist *, int);
@@ -809,7 +811,7 @@ evalcommand(union node *cmd, int flags)
 			argc -= nargv - argv;
 			argv = nargv;
 			cmd_flag |= DO_NOFUNC;
-		}
+                }
 	}
 
 	if (status) {
@@ -866,6 +868,31 @@ raise:
 		}
 		break;
 
+        case CMDTOYCMD:
+                if (spclbltin > 0 || argc == 0) {
+			poplocalvars(1);
+			if (execcmd && argc > 1)
+				listsetvar(varlist.list, VEXPORT);
+		}
+		if (evaltoycmd(cmdentry.u.toycmd, argc, argv, flags)) {
+			int status;
+			int i;
+
+			i = exception;
+			if (i == EXEXIT)
+				goto raise2;
+
+			status = (i == EXINT) ? SIGINT + 128 : 2;
+			exitstatus = status;
+
+			if (i == EXINT || spclbltin > 0) {
+raise2:
+				longjmp(handler->loc, 1);
+			}
+			FORCEINTON;
+		}
+                break;
+
 	case CMDFUNCTION:
 		poplocalvars(1);
 		if (evalfun(cmdentry.u.func, argc, argv, flags))
@@ -915,6 +942,40 @@ cmddone:
 	freestdout();
 	commandname = savecmdname;
 	handler = savehandler;
+
+	return i;
+}
+
+STATIC int
+evaltoycmd(const struct toy_list *cmd, int argc, char **argv, int flags)
+{
+	char *volatile savecmdname;
+	struct jmploc *volatile savehandler;
+	struct jmploc jmploc;
+	int status;
+	int i;
+	char *toy_argv = calloc(argc+1, sizeof(char *));
+
+	printf("evaluating toy command\n");
+	memcpy(toy_argv, argv, argc * sizeof(char *));
+
+	savecmdname = commandname;
+	savehandler = handler;
+	if ((i = setjmp(jmploc.loc)))
+		goto tcmddone;
+	handler = &jmploc;
+	commandname = argv[0];
+	argptr = argv + 1;
+	optptr = NULL;			/* initialize nextopt */
+	status = toy_run(cmd, argv);
+	flushall();
+	status |= outerr(out1);
+	exitstatus = status;
+tcmddone:
+	freestdout();
+	commandname = savecmdname;
+	handler = savehandler;
+	free(toy_argv);
 
 	return i;
 }

@@ -97,7 +97,7 @@ void uudecode_main(void)
       if (i && i!=len) error_exit("bad %s", line);
     }
 line_done:
-    xwrite(ofd, line, out-line);
+    txwrite(ofd, line, out-line);
   }
 
   if (CFG_TOYBOX_FREE) {

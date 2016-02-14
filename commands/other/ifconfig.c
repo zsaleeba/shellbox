@@ -429,14 +429,16 @@ void ifconfig_main(void)
 
         sprintf(toybuf, "/sys/class/net/%s/address", ifre.ifr_name);
         fd = xopen(toybuf, O_RDWR);
-        xwrite(fd, *argv, strlen(*argv));
+        txwrite(fd, *argv, strlen(*argv));
         close(fd);
       } else xioctl(TT.sockfd, SIOCSIFHWADDR, &ifre);
       continue;
 
     // Add/remove ipv6 address to interface
 
-    } else if (!strcmp(*argv, "add") || !strcmp(*argv, "del")) {
+    } 
+#ifdef SIOCGIFINDEX
+    else if (!strcmp(*argv, "add") || !strcmp(*argv, "del")) {
       struct ifreq_inet6 {
         struct in6_addr addr;
         unsigned prefix;
@@ -456,7 +458,9 @@ void ifconfig_main(void)
       close(fd6);
       continue;
     // Iterate through table to find/perform operation
-    } else for (i = 0; i < ARRAY_LEN(try); i++) {
+    } 
+#endif
+    else for (i = 0; i < ARRAY_LEN(try); i++) {
       struct argh *t = try+i;
       int on = t->on, off = t->off;
 
@@ -474,7 +478,9 @@ void ifconfig_main(void)
           if (on < 0) {
             long l = strtoul(*argv, 0, 0);
 
+#ifdef SIOCSIFMAP
             if (off == SIOCSIFMAP) xioctl(TT.sockfd, SIOCGIFMAP, &ifre);
+#endif
             on = -on;
             poke((on>>16) + (char *)&ifre, l, on&15);
             xioctl(TT.sockfd, off, &ifre);

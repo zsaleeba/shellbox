@@ -157,7 +157,7 @@ void cpio_main(void)
       while (size) {
         if (size < sizeof(toybuf)) data = strpad(afd, size, 0);
         else xreadall(afd, toybuf, sizeof(toybuf));
-        if (!test) xwrite(fd, data, data == toybuf ? sizeof(toybuf) : size);
+        if (!test) txwrite(fd, data, data == toybuf ? sizeof(toybuf) : size);
         if (data != toybuf) {
           free(data);
           break;
@@ -237,18 +237,18 @@ void cpio_main(void)
           (int)st.st_ino, st.st_mode, st.st_uid, st.st_gid, (int)st.st_nlink,
           (int)st.st_mtime, (int)st.st_size, major(st.st_dev),
           minor(st.st_dev), major(st.st_rdev), minor(st.st_rdev), nlen, 0);
-        xwrite(afd, toybuf, llen);
-        xwrite(afd, name, nlen);
+        txwrite(afd, toybuf, llen);
+        txwrite(afd, name, nlen);
 
         // NUL Pad header up to 4 multiple bytes.
         llen = (llen + nlen) & 3;
-        if (llen) xwrite(afd, &zero, 4-llen); 
+        if (llen) txwrite(afd, &zero, 4-llen); 
 
         // Write out body for symlink or regular file
         llen = st.st_size;
         if (S_ISLNK(st.st_mode)) {
           if (readlink(name, toybuf, sizeof(toybuf)-1) == llen)
-            xwrite(afd, toybuf, llen);
+            txwrite(afd, toybuf, llen);
           else perror_msg("readlink '%s'", name);
         } else while (llen) {
           nlen = llen > sizeof(toybuf) ? sizeof(toybuf) : llen;
@@ -256,17 +256,17 @@ void cpio_main(void)
           // If read fails, write anyway (already wrote size in header)
           if (nlen != readall(fd, toybuf, nlen))
             if (!error++) perror_msg("bad read from file '%s'", name);
-          xwrite(afd, toybuf, nlen);
+          txwrite(afd, toybuf, nlen);
         }
         llen = st.st_size & 3;
-        if (llen) xwrite(afd, &zero, 4-llen);
+        if (llen) txwrite(afd, &zero, 4-llen);
       }
       close(fd);
     }
     free(name);
 
     memset(toybuf, 0, sizeof(toybuf));
-    xwrite(afd, toybuf,
+    txwrite(afd, toybuf,
       sprintf(toybuf, "070701%040X%056X%08XTRAILER!!!", 1, 0x0b, 0)+4);
   }
   if (TT.archive) xclose(afd);

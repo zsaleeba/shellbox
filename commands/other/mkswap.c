@@ -27,9 +27,9 @@ void mkswap_main(void)
   swap[0] = 1;
   swap[1] = pages;
   xlseek(fd, 1024, SEEK_SET);
-  xwrite(fd, swap, 129*sizeof(unsigned int));
+  txwrite(fd, swap, 129*sizeof(unsigned int));
   xlseek(fd, pagesize-10, SEEK_SET);
-  xwrite(fd, "SWAPSPACE2", 10);
+  txwrite(fd, "SWAPSPACE2", 10);
   fsync(fd);
 
   if (CFG_TOYBOX_FREE) close(fd);

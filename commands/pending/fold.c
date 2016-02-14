@@ -47,7 +47,7 @@ void do_fold(int fd, char *name)
           // print everything but the \n, then move on to the next buffer
           if ((toys.optflags & FLAG_u) && buf[pos-1] != '\n'
                                        && buf[pos+1] != '\n') {
-              xwrite(1, buf, pos);
+              txwrite(1, buf, pos);
               bufsz -= pos + 1;
               buf += pos + 1;
               pos = 0;
@@ -78,7 +78,7 @@ void do_fold(int fd, char *name)
       // we don't want to double up \n; not allowed to wrap before \b
       if (maxlen > 0 && len >= maxlen && buf[pos+1] != '\n' && buf[pos+1] != '\b') {
         if (!(toys.optflags & FLAG_s) || split < 0) split = pos;
-        xwrite(1, buf, split + 1);
+        txwrite(1, buf, split + 1);
         xputc('\n');
         bufsz -= split + 1;
         buf += split + 1;
@@ -86,7 +86,7 @@ void do_fold(int fd, char *name)
         split = -1;
       } else pos++;
     }
-    xwrite(1, buf, bufsz);
+    txwrite(1, buf, bufsz);
   }
   xputc('\n');
 }

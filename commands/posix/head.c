@@ -44,7 +44,7 @@ static void do_head(int fd, char *name)
 
     for(i=0; i<len;) if (toybuf[i++] == '\n' && !--lines) break;
 
-    xwrite(1, toybuf, i);
+    txwrite(1, toybuf, i);
   }
 }
 

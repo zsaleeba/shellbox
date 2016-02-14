@@ -671,7 +671,7 @@ void write_table(void)
     offset = pe->start_offset;
     if (pe->modified == 1) {
       xlseek(dev_fd, offset * g_sect_size, SEEK_SET);
-      xwrite(dev_fd, pe->sec_buffer, g_sect_size);
+      txwrite(dev_fd, pe->sec_buffer, g_sect_size);
     }
   }
   xprintf("The partition table has been altered.\n");

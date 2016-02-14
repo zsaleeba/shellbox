@@ -41,7 +41,12 @@ void touch_main(void)
   int fd, i;
 
   // use current time if no -t or -d
+#ifdef UTIME_NOW
   ts[0].tv_nsec = UTIME_NOW;
+#else
+  clock_getres(CLOCK_REALTIME, &ts[0]);
+#endif
+  
   if (toys.optflags & (FLAG_t|FLAG_d)) {
     char *s, *date;
     struct tm tm;
@@ -110,7 +115,9 @@ void touch_main(void)
 
   // Which time(s) should we actually change?
   i = toys.optflags & (FLAG_a|FLAG_m);
+#ifdef UTIME_OMIT
   if (i && i!=(FLAG_a|FLAG_m)) ts[i==FLAG_m].tv_nsec = UTIME_OMIT;
+#endif
 
   // Loop through files on command line
   for (ss = toys.optargs; *ss;) {

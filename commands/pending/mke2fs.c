@@ -378,7 +378,7 @@ static void put_zeroes(int len)
     memset(toybuf, 0, sizeof(toybuf));
     while (len) {
       int out = len > sizeof(toybuf) ? sizeof(toybuf) : len;
-      xwrite(TT.fsfd, toybuf, out);
+      txwrite(TT.fsfd, toybuf, out);
       len -= out;
     }
   }
@@ -544,11 +544,11 @@ void mke2fs_main(void)
       TT.sb.block_group_nr = SWAP_LE16(i);
 
       // Write superblock and pad it up to block size
-      xwrite(TT.fsfd, &TT.sb, sizeof(struct ext2_superblock));
+      txwrite(TT.fsfd, &TT.sb, sizeof(struct ext2_superblock));
       temp = TT.blocksize - sizeof(struct ext2_superblock);
       if (!i && TT.blocksize > 1024) temp -= 1024;
       memset(toybuf, 0, TT.blocksize);
-      xwrite(TT.fsfd, toybuf, temp);
+      txwrite(TT.fsfd, toybuf, temp);
 
       // Loop through groups to write group descriptor table.
       for(j=0; j<TT.groups; j++) {
@@ -559,7 +559,7 @@ void mke2fs_main(void)
         // Find next array slot in this block (flush block if full).
         slot = j % (TT.blocksize/sizeof(struct ext2_group));
         if (!slot) {
-          if (j) xwrite(TT.fsfd, bg, TT.blocksize);
+          if (j) txwrite(TT.fsfd, bg, TT.blocksize);
           memset(bg, 0, TT.blocksize);
         }
 
@@ -594,7 +594,7 @@ void mke2fs_main(void)
         bg[slot].inode_table = SWAP_LE32(used);
         bg[slot].used_dirs_count = 0;  // (TODO)
       }
-      xwrite(TT.fsfd, bg, TT.blocksize);
+      txwrite(TT.fsfd, bg, TT.blocksize);
     }
 
     // Now write out stuff that every block group has.
@@ -610,7 +610,7 @@ void mke2fs_main(void)
       if (end-start > temp) temp = end-start;
       bits_set(toybuf, start, temp);
     }
-    xwrite(TT.fsfd, toybuf, TT.blocksize);
+    txwrite(TT.fsfd, toybuf, TT.blocksize);
 
     // Write inode bitmap
     memset(toybuf, 0, TT.blocksize);
@@ -622,13 +622,13 @@ void mke2fs_main(void)
       if (slot-j > temp) temp = slot-j;
       bits_set(toybuf, j, temp);
     }
-    xwrite(TT.fsfd, toybuf, TT.blocksize);
+    txwrite(TT.fsfd, toybuf, TT.blocksize);
 
     // Write inode table for this group (TODO)
     for (j = 0; j<TT.inodespg; j++) {
       slot = j % (TT.blocksize/sizeof(struct ext2_inode));
       if (!slot) {
-        if (j) xwrite(TT.fsfd, in, TT.blocksize);
+        if (j) txwrite(TT.fsfd, in, TT.blocksize);
         memset(in, 0, TT.blocksize);
       }
       if (!i && j<INODES_RESERVED) {
@@ -639,7 +639,7 @@ void mke2fs_main(void)
         dti = treenext(dti);
       }
     }
-    xwrite(TT.fsfd, in, TT.blocksize);
+    txwrite(TT.fsfd, in, TT.blocksize);
 
     while (dtb) {
       // TODO write index data block

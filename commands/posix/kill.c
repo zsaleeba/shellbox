@@ -52,7 +52,7 @@ GLOBALS(
 
 #define CLEANUP_kill
 #define FOR_killall5
-#include "generated/flags.h"
+#include "geninc/flags.h"
 
 void kill_main(void)
 {

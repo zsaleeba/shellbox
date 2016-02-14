@@ -634,7 +634,7 @@ done:
 
       // Force newline if noeol pending
       if (fd != -1) {
-        if (TT.noeol) xwrite(TT.fdout, "\n", 1);
+        if (TT.noeol) txwrite(TT.fdout, "\n", 1);
         TT.noeol = 0;
         xsendfile(fd, TT.fdout);
         close(fd);

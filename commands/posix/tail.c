@@ -63,7 +63,7 @@ static void dump_chunk(void *ptr)
 {
   struct line_list *list = ptr;
 
-  xwrite(1, list->data, list->len);
+  txwrite(1, list->data, list->len);
   free(list);
 }
 
@@ -205,7 +205,7 @@ static void do_tail(int fd, char *name)
       if (toybuf[offset++] == '\n') lines--;
       if (offset >= len) break;
     }
-    if (offset<len) xwrite(1, toybuf+offset, len-offset);
+    if (offset<len) txwrite(1, toybuf+offset, len-offset);
   }
 
   // -f support: cache name/descriptor

@@ -58,7 +58,7 @@ static void do_iconv(int fd, char *name)
           inleft--;
         }
       }
-      xwrite(1, outstart, out-outstart);
+      txwrite(1, outstart, out-outstart);
       // Top off input buffer
       memmove(in, toybuf, inleft);
     } while (len < 1 && inleft);

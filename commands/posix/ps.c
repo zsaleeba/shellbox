@@ -139,11 +139,15 @@ struct strawberry {
 
 static time_t get_uptime(void)
 {
+#ifdef FIXME
   struct sysinfo si;
 
   sysinfo(&si);
 
   return si.uptime;
+#else
+  return 0;
+#endif
 }
 
 // Return 1 to display, 0 to skip

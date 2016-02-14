@@ -207,7 +207,7 @@ void bitbuf_flush(struct bitbuf *bb)
 {
   if (!bb->bitpos) return;
 
-  xwrite(bb->fd, bb->buf, (bb->bitpos+7)/8);
+  txwrite(bb->fd, bb->buf, (bb->bitpos+7)/8);
   memset(bb->buf, 0, bb->max);
   bb->bitpos = 0;
 }
@@ -239,7 +239,7 @@ static void output_byte(char sym)
   TT.data[pos] = sym;
 
   if (!pos) {
-    xwrite(TT.outfd, TT.data, 32768);
+    txwrite(TT.outfd, TT.data, 32768);
     if (TT.crcfunc) TT.crcfunc(TT.data, 32768);
   }
 }
@@ -409,7 +409,7 @@ static void inflate(struct bitbuf *bb)
   }
 
   if (TT.pos & 32767) {
-    xwrite(TT.outfd, TT.data, TT.pos & 32767);
+    txwrite(TT.outfd, TT.data, TT.pos & 32767);
     if (TT.crcfunc) TT.crcfunc(TT.data, TT.pos & 32767);
   }
 }
@@ -533,7 +533,7 @@ static void do_gzip(int fd, char *name)
   // Operating System (FF=unknown)
  
   TT.infd = fd;
-  xwrite(bb->fd, "\x1f\x8b\x08\0\0\0\0\0\x02\xff", 10);
+  txwrite(bb->fd, "\x1f\x8b\x08\0\0\0\0\0\x02\xff", 10);
 
   // Use last 1k of toybuf for little endian crc table
   crc_init((unsigned *)(toybuf+sizeof(toybuf)-1024), 1);
