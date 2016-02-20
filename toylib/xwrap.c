@@ -8,6 +8,7 @@
  */
 
 #include "toys.h"
+#include "xfuncs.h"
 
 // strcpy and strncat with size checking. Size is the total space in "dest",
 // including null terminator. Exit if there's not enough space for the string
@@ -415,7 +416,7 @@ char *xabspath(char *path, int exact)
       } else continue;
 
     // Is this a symlink?
-    } else len=readlinkat(dirfd, new->str, buf, 4096);
+    } else len=xreadlinkat(dirfd, new->str, buf, 4096);
 
     if (len>4095) goto error;
     if (len<1) {
@@ -431,7 +432,7 @@ char *xabspath(char *path, int exact)
         if (errno == EINVAL && !todo) break;
         s = new->str;
       }
-      fd = openat(dirfd, s, 0);
+      fd = xopenat(dirfd, s, 0);
       if (fd == -1 && (exact || todo || errno != ENOENT)) goto error;
       close(dirfd);
       dirfd = fd;

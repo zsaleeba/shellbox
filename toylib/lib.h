@@ -3,6 +3,9 @@
  * Copyright 2006 Rob Landley <rob@landley.net>
  */
 
+#ifndef TOYLIB_LIB_H
+#define TOYLIB_LIB_H
+
 // llist.c
 
 // All these list types can be handled by the same code because first element
@@ -260,3 +263,5 @@ pid_t xvforkwrap(pid_t pid);
 
 // Functions in need of further review/cleanup
 #include "toylib/pending.h"
+
+#endif /* TOYLIB_LIB_H */

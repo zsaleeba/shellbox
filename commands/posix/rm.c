@@ -21,6 +21,7 @@ config RM
 
 #define FOR_rm
 #include "toys.h"
+#include "xfuncs.h"
 
 static int do_rm(struct dirtree *try)
 {
@@ -36,7 +37,7 @@ static int do_rm(struct dirtree *try)
 
   // This is either the posix section 2(b) prompt or the section 3 prompt.
   if (!(flags & FLAG_f)
-    && (!S_ISLNK(try->st.st_mode) && faccessat(fd, try->name, W_OK, 0))) or++;
+    && (!S_ISLNK(try->st.st_mode) && xfaccessat(fd, try->name, W_OK, 0))) or++;
   if (!(dir && try->again) && ((or && isatty(0)) || (flags & FLAG_i))) {
     char *s = dirtree_path(try, 0);
 
@@ -50,7 +51,7 @@ static int do_rm(struct dirtree *try)
   if (dir) {
     using = AT_REMOVEDIR;
     // Handle chmod 000 directories when -f
-    if (faccessat(fd, try->name, R_OK, 0)) {
+    if (xfaccessat(fd, try->name, R_OK, 0)) {
       if (toys.optflags & FLAG_f) wfchmodat(fd, try->name, 0700);
       else goto skip;
     }
@@ -68,7 +69,7 @@ static int do_rm(struct dirtree *try)
   }
 
 skip:
-  if (unlinkat(fd, try->name, using)) {
+  if (xunlinkat(fd, try->name, using)) {
     if (!dir || try->symlink != (char *)2) perror_msg("%s", try->name);
 nodelete:
     if (try->parent) try->parent->symlink = (char *)2;

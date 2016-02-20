@@ -52,6 +52,7 @@ config FGREP
 
 #define FOR_grep
 #include "toys.h"
+#include "xfuncs.h"
 #include <regex.h>
 
 GLOBALS(
@@ -282,7 +283,7 @@ static int do_grep_r(struct dirtree *new)
   if (new->parent && !(toys.optflags & FLAG_h)) toys.optflags |= FLAG_H;
 
   name = dirtree_path(new, 0);
-  do_grep(openat(dirtree_parentfd(new), new->name, 0), name);
+  do_grep(xopenat(dirtree_parentfd(new), new->name, 0), name);
   free(name);
 
   return 0;

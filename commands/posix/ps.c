@@ -109,6 +109,7 @@ config PS
 
 #define FOR_ps
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   struct arg_list *G;
@@ -320,9 +321,9 @@ static int do_ps(struct dirtree *new)
 
         sprintf(scratch, "%lld/fd/%i", *slot, i);
         fd = dirtree_parentfd(new);
-        if (!fstatat(fd, scratch, &st, 0) && S_ISCHR(st.st_mode)
+        if (!xfstatat(fd, scratch, &st, 0) && S_ISCHR(st.st_mode)
           && st.st_rdev == slot[4]
-          && 0<(len = readlinkat(fd, scratch, out, 2047)))
+          && 0<(len = xreadlinkat(fd, scratch, out, 2047)))
         {
           out[len] = 0;
           if (!strncmp(out, "/dev/", 5)) out += 5;
@@ -363,7 +364,7 @@ static int do_ps(struct dirtree *new)
 
       len = 0;
       sprintf(out, "%lld/cmdline", *slot);
-      fd = openat(dirtree_parentfd(new), out, O_RDONLY);
+      fd = xopenat(dirtree_parentfd(new), out, O_RDONLY);
  
       if (fd != -1) {
         if (0<(len = read(fd, out, 2047))) {

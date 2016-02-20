@@ -102,6 +102,8 @@ config INSTALL
 
 #define FOR_cp
 #include "toys.h"
+#include "xfuncs.h"
+#include "toylib/lib.h"
 
 GLOBALS(
   union {
@@ -149,7 +151,7 @@ int cp_node(struct dirtree *try)
     // identical source/target (fun with hardlinks).
     if ((TT.top.st_dev == try->st.st_dev && TT.top.st_ino == try->st.st_ino
          && (catch = TT.destname))
-        || (!fstatat(cfd, catch, &cst, 0) && cst.st_dev == try->st.st_dev
+        || (!xfstatat(cfd, catch, &cst, 0) && cst.st_dev == try->st.st_dev
          && cst.st_ino == try->st.st_ino))
     {
       error_msg("'%s' is '%s'", catch, err = dirtree_path(try, 0));
@@ -160,14 +162,14 @@ int cp_node(struct dirtree *try)
 
     // Handle -inv
 
-    if (!faccessat(cfd, catch, F_OK, 0) && !S_ISDIR(cst.st_mode)) {
+    if (!xfaccessat(cfd, catch, F_OK, 0) && !S_ISDIR(cst.st_mode)) {
       char *s;
 
       if (S_ISDIR(try->st.st_dev)) {
         error_msg("dir at '%s'", s = dirtree_path(try, 0));
         free(s);
         return 0;
-      } else if ((flags & FLAG_F) && unlinkat(cfd, catch, 0)) {
+      } else if ((flags & FLAG_F) && xunlinkat(cfd, catch, 0)) {
         error_msg("unlink '%s'", catch);
         return 0;
       } else if (flags & FLAG_n) return 0;
@@ -208,8 +210,8 @@ int cp_node(struct dirtree *try)
         // we created. The closest we can do to closing this is make sure
         // that what we open _is_ a directory rather than something else.
 
-        if (!mkdirat(cfd, catch, try->st.st_mode | 0200) || errno == EEXIST)
-          if (-1 != (try->extra = openat(cfd, catch, O_NOFOLLOW)))
+        if (!xmkdirat(cfd, catch, try->st.st_mode | 0200) || errno == EEXIST)
+          if (-1 != (try->extra = xopenat(cfd, catch, O_NOFOLLOW)))
             if (!fstat(try->extra, &st2) && S_ISDIR(st2.st_mode))
               return DIRTREE_COMEAGAIN
                      | (DIRTREE_SYMFOLLOW*!!(toys.optflags&FLAG_L));
@@ -217,7 +219,7 @@ int cp_node(struct dirtree *try)
       // Hardlink
 
       } else if (flags & FLAG_l) {
-        if (!linkat(tfd, try->name, cfd, catch, 0)) err = 0;
+        if (!xlinkat(tfd, try->name, cfd, catch, 0)) err = 0;
 
       // Copy tree as symlinks. For non-absolute paths this involves
       // appending the right number of .. entries as you go down the tree.
@@ -240,7 +242,7 @@ int cp_node(struct dirtree *try)
             s2 += 3;
           }
         }
-        if (!symlinkat(s, cfd, catch)) {
+        if (!xsymlinkat(s, cfd, catch)) {
           err = 0;
           fdout = AT_FDCWD;
         }
@@ -254,9 +256,9 @@ int cp_node(struct dirtree *try)
 
         // make symlink, or make block/char/fifo/socket
         if (S_ISLNK(try->st.st_mode)
-            ? (0 < (i = readlinkat(tfd, try->name, toybuf, sizeof(toybuf))) &&
-               sizeof(toybuf) > i && !symlinkat(toybuf, cfd, catch))
-            : !mknodat(cfd, catch, try->st.st_mode, try->st.st_rdev))
+            ? (0 < (i = xreadlinkat(tfd, try->name, toybuf, sizeof(toybuf))) &&
+               sizeof(toybuf) > i && !xsymlinkat(toybuf, cfd, catch))
+            : !xmknodat(cfd, catch, try->st.st_mode, try->st.st_rdev))
         {
           err = 0;
           fdout = AT_FDCWD;
@@ -266,19 +268,19 @@ int cp_node(struct dirtree *try)
       } else {
         int fdin;
 
-        fdin = openat(tfd, try->name, O_RDONLY);
+        fdin = xopenat(tfd, try->name, O_RDONLY);
         if (fdin < 0) {
           catch = try->name;
           break;
         }
-        fdout = openat(cfd, catch, O_RDWR|O_CREAT|O_TRUNC, try->st.st_mode);
+        fdout = xopenat(cfd, catch, O_RDWR|O_CREAT|O_TRUNC, try->st.st_mode);
         if (fdout >= 0) {
           xsendfile(fdin, fdout);
           err = 0;
         }
         close(fdin);
       }
-    } while (err && (flags & (FLAG_f|FLAG_n)) && !unlinkat(cfd, catch, 0));
+    } while (err && (flags & (FLAG_f|FLAG_n)) && !xunlinkat(cfd, catch, 0));
   }
 
   // Did we make a thing?
@@ -293,7 +295,7 @@ int cp_node(struct dirtree *try)
       // permission bits already correct for mknod and don't apply to symlink
       // If we can't get a filehandle to the actual object, use racy functions
       if (fdout == AT_FDCWD)
-        rc = fchownat(cfd, catch, try->st.st_uid, try->st.st_gid,
+        rc = xfchownat(cfd, catch, try->st.st_uid, try->st.st_gid,
                       AT_SYMLINK_NOFOLLOW);
       else rc = fchown(fdout, try->st.st_uid, try->st.st_gid);
       if (rc) {
@@ -319,7 +321,7 @@ int cp_node(struct dirtree *try)
     }
 
     if (CFG_MV && toys.which->name[0] == 'm')
-      if (unlinkat(tfd, try->name, S_ISDIR(try->st.st_mode) ? AT_REMOVEDIR :0))
+      if (xunlinkat(tfd, try->name, S_ISDIR(try->st.st_mode) ? AT_REMOVEDIR :0))
         err = "%s";
   }
 

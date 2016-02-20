@@ -34,6 +34,7 @@ config CHOWN
 #define FOR_chgrp
 #define FORCE_FLAGS
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   uid_t owner;
@@ -52,7 +53,7 @@ static int do_chgrp(struct dirtree *node)
     return DIRTREE_COMEAGAIN|(DIRTREE_SYMFOLLOW*!!(flags&FLAG_L));
 
   fd = dirtree_parentfd(node);
-  ret = fchownat(fd, node->name, TT.owner, TT.group,
+  ret = xfchownat(fd, node->name, TT.owner, TT.group,
     AT_SYMLINK_NOFOLLOW*(!(flags&(FLAG_L|FLAG_H)) && (flags&(FLAG_h|FLAG_R))));
 
   if (ret || (flags & FLAG_v)) {

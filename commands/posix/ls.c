@@ -48,6 +48,7 @@ config LS_COLOR
 
 #define FOR_ls
 #include "toys.h"
+#include "xfuncs.h"
 
 // test sst output (suid/sticky in ls flaglist)
 
@@ -190,7 +191,7 @@ static int filter(struct dirtree *new)
       // (Wouldn't it be nice if the lsm functions worked like openat(),
       // fchmodat(), mknodat(), readlinkat() so we could do this without
       // even O_PATH? But no, this is 1990's tech.)
-      int fd = openat(dirtree_parentfd(new), new->name,
+      int fd = xopenat(dirtree_parentfd(new), new->name,
         O_PATH|(O_NOFOLLOW*!!(toys.optflags&FLAG_L)));
 
       if (fd != -1) {
@@ -480,7 +481,7 @@ static void listfiles(int dirfd, struct dirtree *indir)
       if (flags & FLAG_color) {
         struct stat st2;
 
-        if (fstatat(dirfd, sort[next]->symlink, &st2, 0)) color = 256+31;
+        if (xfstatat(dirfd, sort[next]->symlink, &st2, 0)) color = 256+31;
         else color = color_from_mode(st2.st_mode);
 
         if (color) printf("\033[%d;%dm", color>>8, color&255);
@@ -508,7 +509,7 @@ static void listfiles(int dirfd, struct dirtree *indir)
 
     // Recurse into dirs if at top of the tree or given -R
     if (!indir->parent || ((flags&FLAG_R) && dirtree_notdotdot(sort[ul])))
-      listfiles(openat(dirfd, sort[ul]->name, 0), sort[ul]);
+      listfiles(xopenat(dirfd, sort[ul]->name, 0), sort[ul]);
     free((void *)sort[ul]->extra);
   }
   free(sort);

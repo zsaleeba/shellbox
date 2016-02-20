@@ -4,6 +4,7 @@
  */
 
 #include "toys.h"
+#include "xfuncs.h"
 
 static int notdotdot(char *name)
 {
@@ -34,10 +35,10 @@ struct dirtree *dirtree_add_node(struct dirtree *parent, char *name, int flags)
     // open code this because haven't got node to call dirtree_parentfd() on yet
     int fd = parent ? parent->data : AT_FDCWD;
 
-    if (fstatat(fd, name, &st, AT_SYMLINK_NOFOLLOW*!(flags&DIRTREE_SYMFOLLOW)))
+    if (xfstatat(fd, name, &st, AT_SYMLINK_NOFOLLOW*!(flags&DIRTREE_SYMFOLLOW)))
       goto error;
     if (S_ISLNK(st.st_mode)) {
-      if (0>(linklen = readlinkat(fd, name, libbuf, 4095))) goto error;
+      if (0>(linklen = xreadlinkat(fd, name, libbuf, 4095))) goto error;
       libbuf[linklen++]=0;
     }
     len = strlen(name);
@@ -118,7 +119,7 @@ struct dirtree *dirtree_handle_callback(struct dirtree *new,
 
   if (S_ISDIR(new->st.st_mode)) {
     if (flags & (DIRTREE_RECURSE|DIRTREE_COMEAGAIN)) {
-      new->data = openat(dirtree_parentfd(new), new->name, O_CLOEXEC);
+      new->data = xopenat(dirtree_parentfd(new), new->name, O_CLOEXEC);
       flags = dirtree_recurse(new, callback, flags);
     }
   }

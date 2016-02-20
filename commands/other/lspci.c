@@ -29,6 +29,7 @@ config LSPCI_TEXT
 
 #define FOR_lspci
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   char *ids;
@@ -47,19 +48,19 @@ static int do_lspci(struct dirtree *new)
 
   // Parse data out of /proc
 
-  if (-1 == (dirfd = openat(dirtree_parentfd(new), new->name, O_RDONLY)))
+  if (-1 == (dirfd = xopenat(dirtree_parentfd(new), new->name, O_RDONLY)))
     return 0;
 
   // it's ok for the driver link not to be there, whatever fortify says
   *driver = 0;
   if (toys.optflags & FLAG_k)
-    if (readlinkat(dirfd, "driver", driver, sizeof(driver))) {};
+    if (xreadlinkat(dirfd, "driver", driver, sizeof(driver))) {};
 
   for (fields = (char*[]){"class", "vendor", "device", 0}; *fields; fields++) {
     int fd, size = 6 + 2*((toys.optflags & FLAG_e) && p == toybuf);
     *p = 0;
 
-    if (-1 == (fd = openat(dirfd, *fields, O_RDONLY))) {
+    if (-1 == (fd = xopenat(dirfd, *fields, O_RDONLY))) {
       close(dirfd);
       return 0;
     }

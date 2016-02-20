@@ -4,6 +4,7 @@
  */
 
 #include "toys.h"
+#include "xfuncs.h"
 
 void verror_msg(char *msg, int err, va_list va)
 {
@@ -146,7 +147,7 @@ int mkpathat(int atfd, char *dir, mode_t lastmode, int flags)
   // not-a-directory along the way, but the last one we must explicitly
   // test for. Might as well do it up front.
 
-  if (!fstatat(atfd, dir, &buf, 0) && !S_ISDIR(buf.st_mode)) {
+  if (!xfstatat(atfd, dir, &buf, 0) && !S_ISDIR(buf.st_mode)) {
     errno = EEXIST;
     return 1;
   }
@@ -167,7 +168,7 @@ int mkpathat(int atfd, char *dir, mode_t lastmode, int flags)
       else break;
     }
 
-    if (mkdirat(atfd, dir, mode)) {
+    if (xmkdirat(atfd, dir, mode)) {
       if (!(flags&2) || errno != EEXIST) return 1;
     } else if (flags&4)
       fprintf(stderr, "%s: created directory '%s'\n", toys.which->name, dir);
@@ -417,7 +418,7 @@ char *readfileat(int dirfd, char *name, char *ibuf, off_t len)
   int fd;
   char *buf;
 
-  if (-1 == (fd = openat(dirfd, name, O_RDONLY))) return 0;
+  if (-1 == (fd = xopenat(dirfd, name, O_RDONLY))) return 0;
   if (len<1) {
     len = fdlength(fd);
     // proc files don't report a length, so try 1 page minimum.
@@ -560,7 +561,7 @@ char *get_line(int fd)
 
 int wfchmodat(int fd, char *name, mode_t mode)
 {
-  int rc = fchmodat(fd, name, mode, 0);
+  int rc = xfchmodat(fd, name, mode, 0);
 
   if (rc) {
     perror_msg("chmod '%s' to %04o", name, mode);

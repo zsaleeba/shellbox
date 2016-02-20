@@ -35,7 +35,7 @@ static int del_node(struct dirtree *node)
       if (!node->again) return DIRTREE_COMEAGAIN;
       flag = AT_REMOVEDIR;
     }
-    unlinkat(dirtree_parentfd(node), node->name, flag);
+    xunlinkat(dirtree_parentfd(node), node->name, flag);
   }
 
   return 0;

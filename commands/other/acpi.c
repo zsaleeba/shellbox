@@ -23,6 +23,7 @@ config ACPI
 
 #define FOR_acpi
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   int ac, bat, therm, cool;
@@ -34,7 +35,7 @@ int read_int_at(int dirfd, char *name)
   int fd, ret=0;
   FILE *fil;
 
-  if ((fd = openat(dirfd, name, O_RDONLY)) < 0) return -1;
+  if ((fd = xopenat(dirfd, name, O_RDONLY)) < 0) return -1;
   if (!fscanf(fil = xfdopen(fd, "r"), "%d", &ret)) perror_exit("%s", name);
   fclose(fil);
 
@@ -53,7 +54,7 @@ static int acpi_callback(struct dirtree *tree)
     return DIRTREE_RECURSE|DIRTREE_SYMFOLLOW;
 
   if (0 <= (dfd = open((TT.cpath=dirtree_path(tree, NULL)), O_RDONLY))) {
-    if ((fd = openat(dfd, "type", O_RDONLY)) < 0) goto done;
+    if ((fd = xopenat(dfd, "type", O_RDONLY)) < 0) goto done;
     len = readall(fd, toybuf, sizeof(toybuf));
     close(fd);
     if (len < 1) goto done;
