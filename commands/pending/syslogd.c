@@ -189,7 +189,7 @@ static int parse_config_file(void)
 
   for (linelen = 0; fp;) {
     confline = NULL;
-    len = getline(&confline, &linelen, fp);
+    len = xgetline(&confline, &linelen, fp);
     if (len <= 0) break;
     lineno++;
     for (; *confline == ' '; confline++, len--) ;

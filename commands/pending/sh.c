@@ -379,7 +379,7 @@ void sh_main(void)
 
       // TODO: parse escapes in prompt
       if (!f) printf("%s", prompt ? prompt : "$ ");
-      if (1 > getline(&command, &cmdlen, f ? f : stdin)) break;
+      if (1 > xgetline(&command, &cmdlen, f ? f : stdin)) break;
       handle(command);
       free(command);
     }

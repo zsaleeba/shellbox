@@ -86,7 +86,7 @@ static void do_grep(int fd, char *name)
     int mmatch = 0;
 
     lcount++;
-    if (0 > (len = getdelim(&line, &unused, indelim, file))) break;
+    if (0 > (len = xgetdelim(&line, &unused, indelim, file))) break;
     if (line[len-1] == indelim) line[len-1] = 0;
 
     start = line;

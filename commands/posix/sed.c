@@ -164,6 +164,7 @@ config SED
 
 #define FOR_sed
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   struct arg_list *f;
@@ -658,7 +659,7 @@ static void do_lines(int fd, char *name, void (*call)(char **pline, long len))
     char *line = 0;
     ssize_t len;
 
-    len = getline(&line, (void *)&len, fp);
+    len = xgetline(&line, (void *)&len, fp);
     if (len > 0) {
       call(&line, len);
       if (line == (void *)1) break;

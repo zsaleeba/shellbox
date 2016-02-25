@@ -33,6 +33,7 @@ config CPIO
 
 #define FOR_cpio
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   char *archive;
@@ -199,7 +200,7 @@ void cpio_main(void)
 
         memset(times, 0, sizeof(struct timespec)*2);
         times[0].tv_sec = times[1].tv_sec = timestamp;
-        err = utimensat(AT_FDCWD, name, times, AT_SYMLINK_NOFOLLOW);
+        err = xutimensat(AT_FDCWD, name, times, AT_SYMLINK_NOFOLLOW);
       }
     }
 
@@ -218,7 +219,7 @@ void cpio_main(void)
       int len, fd = -1;
       ssize_t llen;
 
-      len = getline(&name, &size, stdin);
+      len = xgetline(&name, &size, stdin);
       if (len<1) break;
       if (name[len-1] == '\n') name[--len] = 0;
       nlen = len+1;

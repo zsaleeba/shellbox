@@ -24,4 +24,10 @@ int xfchownat(int dirfd, const char *pathname, uid_t owner, gid_t group, int fla
 int xsymlinkat(const char *oldpath, int newdirfd, const char *newpath);
 int xmknodat(int dirfd, const char *pathname, mode_t mode, dev_t dev);
 
+ssize_t xgetdelim(char **lineptr, size_t *n, int delim, FILE *stream);
+ssize_t xgetline(char **lineptr, size_t *n, FILE *stream);
+
+int xutimensat(int dirfd, const char *pathname, const struct timespec times[2], int flags);
+int xfutimens(int fd, const struct timespec times[2]);
+
 #endif	/* XFUNCS_H */

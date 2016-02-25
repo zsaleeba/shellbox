@@ -52,7 +52,7 @@ CSRCS = shell/alias.c shell/arith_yacc.c shell/arith_yylex.c \
 	commands/other/chroot.c commands/other/chvt.c \
 	commands/other/clear.c commands/other/count.c \
 	commands/other/dos2unix.c \
-	commands/other/factor.c commands/other/fallocate.c \
+	commands/other/factor.c \
 	commands/other/fsync.c commands/other/help.c \
 	commands/other/hexedit.c \
 	commands/other/printenv.c commands/other/pwdx.c \
@@ -65,10 +65,13 @@ CSRCS = shell/alias.c shell/arith_yacc.c shell/arith_yylex.c \
 	commands/other/which.c commands/other/xxd.c \
 	commands/other/yes.c \
 	toylib/args.c toylib/dirtree.c toylib/getmountlist.c \
+	toylib/commascan.c \
 	toylib/help.c toylib/interestingtimes.c toylib/lib.c \
 	toylib/llist.c toylib/net.c toylib/password.c \
 	toylib/portability.c toylib/xwrap.c toylib/xat.c \
+	toylib/xutimens.c \
 #	commands/posix/date.c commands/posix/id.c \
+#	commands/other/fallocate.c \
 #	commands/posix/df.c commands/posix/kill.c 
 #	commands/posix/env.c \
 #	commands/posix/nice.c commands/posix/renice.c \

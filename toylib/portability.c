@@ -30,8 +30,7 @@ pid_t xfork(void)
 }
 #endif
 
-#if defined(__APPLE__)
-ssize_t getdelim(char **linep, size_t *np, int delim, FILE *stream)
+ssize_t xgetdelim(char **linep, size_t *np, int delim, FILE *stream)
 {
   int ch;
   size_t new_len;
@@ -79,13 +78,14 @@ ssize_t getdelim(char **linep, size_t *np, int delim, FILE *stream)
   return i > 0 ? i : -1;
 }
 
-ssize_t getline(char **linep, size_t *np, FILE *stream)
+ssize_t xgetline(char **linep, size_t *np, FILE *stream)
 {
-  return getdelim(linep, np, '\n', stream);
+  return xgetdelim(linep, np, '\n', stream);
 }
 
 extern char **environ;
 
+#if defined(__APPLE__)
 int clearenv(void)
 {
   *environ = NULL;

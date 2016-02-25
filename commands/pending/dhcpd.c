@@ -732,7 +732,7 @@ static int parse_server_config(char *config_file, struct config_keyword *confkey
 
   if (!(fs = fopen(config_file, "r"))) perror_msg("%s", config_file);
   for (len = 0, linelen = 0; fs;) {
-    len = getline(&confline_temp, (size_t*) &linelen, fs);
+    len = xgetline(&confline_temp, (size_t*) &linelen, fs);
     confline = confline_temp;
     if (len <= 0) break;
     for (; *confline == ' '; confline++, len--);

@@ -131,9 +131,9 @@ static int scan_proc_net_file(char *path, int family, char type,
 
   if (!fp) return 0;
 
-  if (!getline(&line, &line_length, fp)) return 0; // Skip header.
+  if (!xgetline(&line, &line_length, fp)) return 0; // Skip header.
 
-  while (getline(&line, &line_length, fp) > 0) {
+  while (xgetline(&line, &line_length, fp) > 0) {
     fn(line, family, type, fi, sought_inode);
     if (fi->name != 0) break;
   }
@@ -337,7 +337,7 @@ static void visit_maps(struct proc_info *pi)
   fp = fopen(toybuf, "r");
   if (!fp) return;
 
-  while (getline(&line, &line_length, fp) > 0) {
+  while (xgetline(&line, &line_length, fp) > 0) {
     int name_pos;
 
     if (sscanf(line, "%*x-%*x %*s %llx %s %ld %n",

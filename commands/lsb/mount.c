@@ -177,7 +177,7 @@ static void mount_filesystem(char *dev, char *dir, char *type,
     if (fp && !buf) {
       size_t i;
 
-      if (getline(&buf, &i, fp)<0) break;
+      if (xgetline(&buf, &i, fp)<0) break;
       type = buf;
       // skip nodev devices
       if (!isspace(*type)) {

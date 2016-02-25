@@ -81,7 +81,7 @@ void factor_main(void)
     char *s = 0;
     size_t len = 0;
 
-    if (-1 == getline(&s, &len, stdin)) break;
+    if (-1 == xgetline(&s, &len, stdin)) break;
     factor(s);
   }
 }

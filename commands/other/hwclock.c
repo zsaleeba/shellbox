@@ -69,7 +69,7 @@ void hwclock_main()
     char *s = 0;
 
     for (fp = fopen("/etc/adjtime", "r");
-         fp && getline(&s, (void *)toybuf, fp)>0;
+         fp && xgetline(&s, (void *)toybuf, fp)>0;
          free(s), s = 0) TT.utc += !strncmp(s, "UTC", 3);
     if (fp) fclose(fp);
   }

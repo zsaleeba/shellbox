@@ -27,6 +27,7 @@ config NL
 
 #define FOR_nl
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   long w;
@@ -50,7 +51,7 @@ static void do_nl(int fd, char *name)
     size_t temp;
     int match = *TT.b != 'n';
 
-    if (getline(&line, &temp, f) < 1) {
+    if (xgetline(&line, &temp, f) < 1) {
       if (ferror(f)) perror_msg("%s", name);
       break;
     }

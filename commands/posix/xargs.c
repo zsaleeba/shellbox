@@ -39,6 +39,7 @@ config XARGS_PEDANTIC
 
 #define FOR_xargs
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   long max_bytes;
@@ -136,7 +137,7 @@ void xargs_main(void)
       // Read line
       if (!data) {
         ssize_t l = 0;
-        l = getdelim(&data, (size_t *)&l, TT.delim, stdin);
+        l = xgetdelim(&data, (size_t *)&l, TT.delim, stdin);
 
         if (l<0) {
           data = 0;

@@ -112,7 +112,7 @@ static int parse_config_file(char *fname)
   FILE *fp = fopen(fname, "r");
 
   if (!fp) return 0;
-  for (;getline(&line, &len, fp) != -1; line = NULL) {
+  for (;xgetline(&line, &len, fp) != -1; line = NULL) {
     char *ptr = line;
 
     while (*ptr == ' ' || *ptr == '\t') ptr++;

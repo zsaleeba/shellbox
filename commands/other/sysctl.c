@@ -127,7 +127,7 @@ void sysctl_main()
     for (;;) {
       char *line = 0, *key, *val;
 
-      if (-1 == (len = getline(&line, &len, fp))) break;
+      if (-1 == (len = xgetline(&line, &len, fp))) break;
       key = line;
       while (isspace(*key)) key++;
       if (*key == '#' || *key == ';' || !*key) continue;

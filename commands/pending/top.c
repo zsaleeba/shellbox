@@ -360,7 +360,7 @@ static void read_smaps(pid_t pid, struct proc_info *p)
     int off;
 
     line = 0;
-    if (0 >= getline(&line, &len, fp)) break;
+    if (0 >= xgetline(&line, &len, fp)) break;
     count = sscanf(line, "%llx-%llx %s %*s %*s %*s %n",
         &start, &end, toybuf, &off);
 
@@ -740,7 +740,7 @@ static void read_cpu_stat()
   char *line = 0, *params = "%lu %lu %lu %lu %lu %lu %lu %lu";
   FILE *fp = xfopen("/proc/stat", "r");
 
-  for (i = 0; i<=8 && getline(&line, &len, fp) > 0; i++) {
+  for (i = 0; i<=8 && xgetline(&line, &len, fp) > 0; i++) {
     if (i) sprintf(toybuf, "cpu%d %s", i-1, params);
     else sprintf(toybuf, "cpu  %s",  params);
     len = sscanf(line, toybuf, &new_cpu[i].utime, &new_cpu[i].ntime, 

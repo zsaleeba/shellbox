@@ -60,7 +60,7 @@ void pmap_main(void)
       int off, count;
 
       line = 0;
-      if (0 >= getline(&line, &len, fp)) break;
+      if (0 >= xgetline(&line, &len, fp)) break;
       count = sscanf(line, "%llx-%llx %s %*s %*s %*s %n",
         &start, &end, toybuf, &off);
 

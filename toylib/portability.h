@@ -210,12 +210,6 @@ int clearenv(void);
 #define SWAP_LE64(x) (x)
 #endif
 
-#if defined(__APPLE__) \
-    || (defined(__GLIBC__) && __GLIBC__ == 2 && __GLIBC_MINOR__ < 10)
-ssize_t getdelim(char **lineptr, size_t *n, int delim, FILE *stream);
-ssize_t getline(char **lineptr, size_t *n, FILE *stream);
-#endif
-
 // Linux headers not listed by POSIX or LSB
 #include <sys/mount.h>
 #ifndef __rtems__
@@ -264,6 +258,18 @@ typedef float FLOAT;
 
 #ifndef __uClinux__
 pid_t xfork(void);
+#endif
+
+#ifndef major
+#define major(dev)      ((dev)>>8)
+#endif
+
+#ifndef minor
+#define minor(dev)      ((dev) & 0xff)
+#endif
+
+#ifndef makedev
+#define makedev(ma,mi)    ((ma)<<8 | (mi))
 #endif
 
 //#define strncpy(...) @@strncpyisbadmmkay@@

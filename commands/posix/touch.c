@@ -123,7 +123,7 @@ void touch_main(void)
   for (ss = toys.optargs; *ss;) {
 
     // cheat: FLAG_h is rightmost flag, so its value is 1
-    if (!utimensat(AT_FDCWD, *ss, ts,
+    if (!xutimensat(AT_FDCWD, *ss, ts,
         (toys.optflags & FLAG_h)*AT_SYMLINK_NOFOLLOW)) ss++;
     else if (toys.optflags & FLAG_c) ss++;
     else if (access(*ss, F_OK) && (-1!=(fd = open(*ss, O_CREAT, 0666))))

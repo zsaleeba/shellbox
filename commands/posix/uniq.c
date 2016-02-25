@@ -26,6 +26,7 @@ config UNIQ
 
 #define FOR_uniq
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   long maxchars;
@@ -70,10 +71,10 @@ void uniq_main(void)
   if (toys.optflags & FLAG_z) eol = 0;
 
   // If first line can't be read
-  if (getdelim(&prevline, &prevsize, eol, infile) < 0)
+  if (xgetdelim(&prevline, &prevsize, eol, infile) < 0)
     return;
 
-  while (getdelim(&thisline, &thissize, eol, infile) > 0) {
+  while (xgetdelim(&thisline, &thissize, eol, infile) > 0) {
     int diff;
     char *t1, *t2;
 

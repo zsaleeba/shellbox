@@ -310,8 +310,8 @@ int cp_node(struct dirtree *try)
     if (TT.pflags & 4) {
       struct timespec times[] = {try->st.st_atim, try->st.st_mtim};
 
-      if (fdout == AT_FDCWD) utimensat(cfd, catch, times, AT_SYMLINK_NOFOLLOW);
-      else futimens(fdout, times);
+      if (fdout == AT_FDCWD) xutimensat(cfd, catch, times, AT_SYMLINK_NOFOLLOW);
+      else xfutimens(fdout, times);
     }
 
     // mode comes last because other syscalls can strip suid bit
