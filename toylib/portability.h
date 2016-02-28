@@ -57,6 +57,7 @@
 // but even many posix-2008 functions aren't provided by glibc unless you
 // claim it's in the name of Gnu.
 
+#if 0
 #if defined(__GLIBC__)
 // "Function prototypes shall be provided." but aren't.
 // http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/unistd.h.html
@@ -155,6 +156,7 @@ int utimensat(int fd, const char *path, const struct timespec times[2], int flag
 #endif // Old glibc
 
 #endif // glibc in general
+#endif
 
 #if !defined(__GLIBC__) && !defined(__BIONIC__)
 // POSIX basename.

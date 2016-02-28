@@ -87,7 +87,7 @@
 
 struct toy_list *toy_find(char *name);
 void toy_init(struct toy_list *which, char *argv[]);
-int toy_run(const struct toy_list *cmd, char *argv[]);
+int toy_run(struct toy_list *cmd, char *argv[]);
 //void toy_exec(char *argv[]);
 
 // Flags describing command behavior.

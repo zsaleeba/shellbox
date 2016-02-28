@@ -48,6 +48,8 @@ struct toy_list *toy_find(char *name)
     if (result<0) top=--middle;
     else bottom = ++middle;
   }
+  
+  return NULL;
 }
 
 // Figure out whether or not anything is using the option parsing logic,
@@ -119,7 +121,7 @@ void toy_init(struct toy_list *which, char *argv[])
 }
 
 // Runs an internal toybox command. Returns the exit value.
-int toy_run(const struct toy_list *cmd, char *argv[])
+int toy_run(struct toy_list *cmd, char *argv[])
 {
     // Return if stack depth getting noticeable (proxy for leaked heap, etc).
     if (toys.stacktop && labs((char *)toys.stacktop-(char *)&cmd)>6000) {
