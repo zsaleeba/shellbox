@@ -161,7 +161,7 @@ static int match_process(long long *slot)
   long *ll = 0;
 
   // Do we have -g -G -p -P -s -t -u -U options selecting processes?
-  for (i = 0; i < ARRAY_LEN(match); i++) {
+  for (i = 0; i < (int)ARRAY_LEN(match); i++) {
     if (match[i]->len) {
       ll = match[i]->ptr;
       for (j = 0; j<match[i]->len; j++) if (ll[j] == slot[mslot[i]]) return 1;
@@ -174,7 +174,7 @@ static int match_process(long long *slot)
   // Filter implicit categories for other display types
   if ((toys.optflags&(FLAG_a|FLAG_d)) && slot[3]==*slot) return 0;
   if ((toys.optflags&FLAG_a) && !slot[4]) return 0;
-  if (!(toys.optflags&(FLAG_a|FLAG_d|FLAG_A|FLAG_e)) && TT.tty!=slot[4])
+  if (!(toys.optflags&(FLAG_a|FLAG_d|FLAG_A|FLAG_e)) && TT.tty!=(unsigned long)slot[4])
     return 0;
 
   return 1;
@@ -246,7 +246,7 @@ static int do_ps(struct dirtree *new)
     {
       char *fmt = "%lld";
 
-      ll = slot[((char[]){0,1,15,16,27,20,21,2,20,9,7})[i]];
+      ll = slot[(int)((char[]){0,1,15,16,27,20,21,2,20,9,7})[i]];
       if (i==2) ll--;
       if (i==4) fmt = "%llx";
       else if (i==5) ll >>= 12;
@@ -322,7 +322,7 @@ static int do_ps(struct dirtree *new)
         sprintf(scratch, "%lld/fd/%i", *slot, i);
         fd = dirtree_parentfd(new);
         if (!xfstatat(fd, scratch, &st, 0) && S_ISCHR(st.st_mode)
-          && st.st_rdev == slot[4]
+          && st.st_rdev == (unsigned long)slot[4]
           && 0<(len = xreadlinkat(fd, scratch, out, 2047)))
         {
           out[len] = 0;
@@ -469,7 +469,7 @@ static char *parse_o(char *type, int length)
   }
 
   // Find type
-  for (i = 0; i<ARRAY_LEN(typos); i++) {
+  for (i = 0; i<(int)ARRAY_LEN(typos); i++) {
     field->which = i;
     for (j = 0; j<2; j++) {
       if (!j) s = typos[i];
@@ -478,7 +478,7 @@ static char *parse_o(char *type, int length)
       else s = ((char *[]){"NICE","ARGS","COMM","ETIME","PCPU",
                            "VSIZE","UNAME"})[k];
 
-      if (!strncasecmp(type, s, end-type) && strlen(s)==end-type) break;
+      if (!strncasecmp(type, s, end-type) && strlen(s)==(size_t)(end-type)) break;
     }
     if (j!=2) break;
   }

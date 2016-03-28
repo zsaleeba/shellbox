@@ -70,7 +70,7 @@ static int validate_password(char *pwd)
 static void run_shell(char *shell) 
 {
   snprintf(toybuf,sizeof(toybuf), "-%s", shell);
-  execl(shell, toybuf, NULL);
+  xexecl(shell, toybuf, NULL);
   error_exit("Failed to spawn shell");
 }
 

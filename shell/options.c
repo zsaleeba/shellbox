@@ -377,6 +377,7 @@ shiftcmd(int argc, char **argv)
 int
 setcmd(int argc, char **argv)
 {
+    (void)argv;
 	if (argc == 1)
 		return showvars(nullstr, 0, VUNSET);
 	INTOFF;
@@ -414,14 +415,14 @@ getoptscmd(int argc, char **argv)
 		sh_error("Usage: getopts optstring var [arg]");
 	else if (argc == 3) {
 		optbase = shellparam.p;
-		if ((unsigned)shellparam.optind > shellparam.nparam + 1) {
+		if (shellparam.optind > shellparam.nparam + 1) {
 			shellparam.optind = 1;
 			shellparam.optoff = -1;
 		}
 	}
 	else {
 		optbase = &argv[3];
-		if ((unsigned)shellparam.optind > argc - 2) {
+		if (shellparam.optind > argc - 2) {
 			shellparam.optind = 1;
 			shellparam.optoff = -1;
 		}
@@ -444,7 +445,7 @@ getopts(char *optstr, char *optvar, char **optfirst)
 	shellparam.optind = -1;
 	optnext = optfirst + ind - 1;
 
-	if (ind <= 1 || off < 0 || strlen(optnext[-1]) < off)
+	if (ind <= 1 || off < 0 || (int)strlen(optnext[-1]) < off)
 		p = NULL;
 	else
 		p = optnext[-1] + off;

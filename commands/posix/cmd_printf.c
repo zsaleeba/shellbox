@@ -57,7 +57,7 @@ static int handle_slash(char **esc_val)
   while (len) {
     num = tolower(*ptr) - '0';
     if (num >= 'a'-'0') num += '0'-'a'+10;
-    if (num >= base) {
+    if ((int)num >= base) {
       // Don't parse invalid hex value ala "\xvd", print it verbatim
       if (base == 16 && len == 2) {
         ptr--;

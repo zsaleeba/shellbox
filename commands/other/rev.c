@@ -17,6 +17,7 @@ config REV
 
 static void do_rev(int fd, char *name)
 {
+  (void)name;
   char *c;
 
   for (;;) {

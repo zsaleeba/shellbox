@@ -57,7 +57,7 @@ static void oneit_signaled(int signal)
   // PID 1 can't call reboot() because it kills the task that calls it,
   // which causes the kernel to panic before the actual reboot happens.
   sync();
-  if (!vfork()) reboot(action);
+  if (!xvfork()) reboot(action);
 }
 
 void oneit_main(void)
@@ -79,7 +79,7 @@ void oneit_main(void)
   while (!toys.signal) {
 
     // Create a new child process.
-    pid = vfork();
+    pid = xvfork();
     if (pid) {
 
       // pid 1 reaps zombies until it gets its child, then halts system.
@@ -101,7 +101,7 @@ void oneit_main(void)
 
       // Can't xexec() here, we vforked so we don't want to error_exit().
       toy_exec(toys.optargs);
-      execvp(*toys.optargs, toys.optargs);
+      xexecvp(*toys.optargs, toys.optargs);
       perror_msg("%s not in PATH=%s", *toys.optargs, getenv("PATH"));
 
       break;

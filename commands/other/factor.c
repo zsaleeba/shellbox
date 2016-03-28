@@ -16,6 +16,7 @@ config FACTOR
 */
 
 #include "toys.h"
+#include "xfuncs.h"
 
 static void factor(char *s)
 {

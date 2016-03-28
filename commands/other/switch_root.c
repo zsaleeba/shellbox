@@ -109,7 +109,7 @@ void switch_root_main(void)
     for (i=0; i<3; i++) if (console != i) dup2(console, i);
     if (console>2) close(console);
   }
-  execv(*cmdline, cmdline);
+  xexecv(*cmdline, cmdline);
   perror_msg("Failed to exec '%s'", *cmdline);
 panic:
   if (toys.optflags & FLAG_h) for (;;) wait(NULL);

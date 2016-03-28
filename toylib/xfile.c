@@ -127,7 +127,7 @@ size_t xread(int fd, void *buf, size_t len)
 
 void xreadall(int fd, void *buf, size_t len)
 {
-  if (len != readall(fd, buf, len)) perror_exit("xreadall");
+  if ((ssize_t)len != readall(fd, buf, len)) perror_exit("xreadall");
 }
 
 // There's no xwriteall(), just txwrite().  When we read, there may or may not
@@ -136,7 +136,7 @@ void xreadall(int fd, void *buf, size_t len)
 
 void txwrite(int fd, void *buf, size_t len)
 {
-  if (len != writeall(fd, buf, len)) perror_exit("txwrite");
+  if ((ssize_t)len != writeall(fd, buf, len)) perror_exit("txwrite");
 }
 
 // Die if lseek fails, probably due to being called on a pipe.

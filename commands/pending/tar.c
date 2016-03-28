@@ -290,7 +290,7 @@ static void compress_stream(struct archive_handler *tar_hdl)
   if (pipe(pipefd) == -1) error_exit("pipe");
 
   signal(SIGPIPE, SIG_IGN);
-  cpid = fork();
+  cpid = xfork();
   if (cpid == -1) perror_exit("fork");
 
   if (!cpid) {    /* Child reads from pipe */
@@ -322,7 +322,7 @@ static void extract_to_command(struct archive_handler *tar)
   if (pipe(pipefd) == -1) error_exit("pipe");
   if (!S_ISREG(file_hdr->mode)) return; //only regular files are supported.
 
-  cpid = fork();
+  cpid = xfork();
   if (cpid == -1) perror_exit("fork");
 
   if (!cpid) {    // Child reads from pipe
@@ -504,7 +504,7 @@ static void extract_stream(struct archive_handler *tar_hdl)
 
   if (pipe(pipefd) == -1) error_exit("pipe");
 
-  cpid = fork();
+  cpid = xfork();
   if (cpid == -1) perror_exit("fork");
 
   if (!cpid) {    /* Child reads from pipe */

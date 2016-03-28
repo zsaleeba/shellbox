@@ -51,7 +51,7 @@ static void do_expand(int fd, char *name)
 
         width = mbrtowc(&blah, toybuf+i, len-i, 0);
         if (width > 1) {
-          if (width != fwrite(toybuf+i, width, 1, stdout))
+          if (width != (int)fwrite(toybuf+i, width, 1, stdout))
             perror_exit("stdout");
           i += width-1;
           x++;
@@ -73,8 +73,8 @@ static void do_expand(int fd, char *name)
         if (TT.tabcount < 2) {
           width = TT.tabcount ? *TT.tab : 8;
           width -= x%width;
-        } else while (stop < TT.tabcount) {
-          if (TT.tab[stop] > x) {
+        } else while (stop < (int)TT.tabcount) {
+          if ((int)TT.tab[stop] > x) {
             width = TT.tab[stop] - x;
             break;
           } else stop++;
@@ -100,7 +100,7 @@ static int parse_tablist(unsigned *tablist)
       int count;
       unsigned x, *t = tablist ? tablist+tabcount : &x;
 
-      if (tabcount >= sizeof(toybuf)/sizeof(unsigned)) break;
+      if (tabcount >= (int)(sizeof(toybuf)/sizeof(unsigned))) break;
       if (sscanf(s, "%u%n", t, &count) != 1) break;
       if (tabcount++ && tablist && *(t-1) >= *t) break;
       s += count;

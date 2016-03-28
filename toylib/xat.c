@@ -196,6 +196,7 @@ xopenat(int fd, const char *path, int flags, ...)
 int
 xfchmodat(int dirfd, const char *pathname, mode_t mode, int flags)
 {
+    (void)flags;
 	int cfd, ret, error;
 
 	cfd = open(".", O_RDONLY 
@@ -381,6 +382,11 @@ xmknodat(int dirfd, const char *pathname, mode_t mode, dev_t dev)
 int 
 xlinkat(int olddirfd, const char *oldpath, int newdirfd, const char *newpath, int flags)
 {
+    (void)olddirfd;
+    (void)oldpath;
+    (void)newdirfd;
+    (void)newpath;
+    (void)flags;
 	/* implement this later. */
 	errno = EINVAL;
 	return -1;

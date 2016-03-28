@@ -25,6 +25,7 @@ config SYSCTL
 */
 #define FOR_sysctl
 #include "toys.h"
+#include "xfuncs.h"
 
 // Null terminate at =, return value
 static char *split_key(char *key)
@@ -122,12 +123,14 @@ void sysctl_main()
   // read file
   else if (toys.optflags & FLAG_p) {
     FILE *fp = xfopen(*toys.optargs ? *toys.optargs : "/etc/sysctl.conf", "r");
+    ssize_t slen;
     size_t len;
 
     for (;;) {
       char *line = 0, *key, *val;
 
-      if (-1 == (len = xgetline(&line, &len, fp))) break;
+      if (-1 == (slen = xgetline(&line, &len, fp))) break;
+      len = slen;
       key = line;
       while (isspace(*key)) key++;
       if (*key == '#' || *key == ';' || !*key) continue;

@@ -102,7 +102,7 @@ static int od_out_t(struct odtype *t, char *buf, int *offset)
     throw = sprintf(buf, class, 0, or);
 
     // Accumulate integer based on size argument
-    for (k=0; k < t->size; k++) {
+    for (k=0; k < (unsigned)t->size; k++) {
       or = TT.buf[(*offset)++];
       ll |= or << (8*(IS_BIG_ENDIAN ? t->size-k-1 : k));
     }
@@ -157,7 +157,7 @@ static void od_outline(void)
   if (TT.star) return;
 
   // Find largest "pad" of the output types.
-  for (i = pad = 0; i<TT.types; i++) {
+  for (i = pad = 0; i<(int)TT.types; i++) {
     int bytes = 0;
 
     // If more than one byte of input consumed, average rounding up.
@@ -169,7 +169,7 @@ static void od_outline(void)
 
   // For each output type, print one line
 
-  for (i=0; i<TT.types; i++) {
+  for (i=0; i<(int)TT.types; i++) {
     for (j = 0; j<len;) {
       int bytes = j;
 

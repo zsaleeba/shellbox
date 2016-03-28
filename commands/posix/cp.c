@@ -257,7 +257,7 @@ int cp_node(struct dirtree *try)
         // make symlink, or make block/char/fifo/socket
         if (S_ISLNK(try->st.st_mode)
             ? (0 < (i = xreadlinkat(tfd, try->name, toybuf, sizeof(toybuf))) &&
-               sizeof(toybuf) > i && !xsymlinkat(toybuf, cfd, catch))
+               sizeof(toybuf) > (size_t)i && !xsymlinkat(toybuf, cfd, catch))
             : !xmknodat(cfd, catch, try->st.st_mode, try->st.st_rdev))
         {
           err = 0;
@@ -345,13 +345,13 @@ void cp_main(void)
     char *pre = xstrdup(TT.c.preserve), *s;
 
     if (comma_scan(pre, "all", 1)) TT.pflags = ~0;
-    for (i=0; i<ARRAY_LEN(preserve); i++)
+    for (i=0; i<(int)ARRAY_LEN(preserve); i++)
       if (comma_scan(pre, preserve[i], 1)) TT.pflags |= 1<<i;
     if (*pre) {
 
       // Try to interpret as letters, commas won't set anything this doesn't.
       for (s = TT.c.preserve; *s; s++) {
-        for (i=0; i<ARRAY_LEN(preserve); i++)
+        for (i=0; i<(int)ARRAY_LEN(preserve); i++)
           if (*s == *preserve[i]) break;
         if (i == ARRAY_LEN(preserve)) {
           if (*s == 'a') TT.pflags = ~0;

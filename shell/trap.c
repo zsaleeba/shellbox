@@ -98,6 +98,8 @@ INIT {
 int
 trapcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	char *action;
 	char **ap;
 	int signo;

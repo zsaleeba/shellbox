@@ -512,7 +512,7 @@ test_st_mode(const struct stat64 *st, int mode)
 		/* Root can execute any file that has any one of the execute
 		   bits set. */
 		mode = S_IXUSR | S_IXGRP | S_IXOTH;
-	} else if (st->st_uid == euid)
+	} else if ((int)st->st_uid == euid)
 		mode <<= 6;
 	else if (bash_group_member(st->st_gid))
 		mode <<= 3;

@@ -113,7 +113,7 @@ static unsigned int get_bits(struct bunzip_data *bd, char bits_wanted)
 
   // If we need to get more data from the byte buffer, do so.  (Loop getting
   // one byte at a time to enforce endianness and avoid unaligned access.)
-  while (bd->inbufBitCount < bits_wanted) {
+  while (bd->inbufBitCount < (unsigned int)bits_wanted) {
 
     // If we need to read more data from file into byte buffer, do so
     if (bd->inbufPos == bd->inbufCount) {
@@ -401,7 +401,7 @@ static int read_huffman_data(struct bunzip_data *bd, struct bwdata *bw)
        literal used is the one at the head of the mtfSymbol array.) */
     if (runPos) {
       runPos = 0;
-      if (dbufCount+hh > bd->dbufSize) return RETVAL_DATA_ERROR;
+      if (dbufCount+hh > (int)bd->dbufSize) return RETVAL_DATA_ERROR;
 
       uc = bd->symToByte[bd->mtfSymbol[0]];
       byteCount[uc] += hh;
@@ -417,7 +417,7 @@ static int read_huffman_data(struct bunzip_data *bd, struct bwdata *bw)
        result can't be -1 or 0, because 0 and 1 are RUNA and RUNB.
        Another instance of the first symbol in the mtf array, position 0,
        would have been handled as part of a run.) */
-    if (dbufCount>=bd->dbufSize) return RETVAL_DATA_ERROR;
+    if (dbufCount>= (int)bd->dbufSize) return RETVAL_DATA_ERROR;
     ii = nextSym - 1;
     uc = bd->mtfSymbol[ii];
     // On my laptop, unrolling this memmove() into a loop shaves 3.5% off
@@ -432,7 +432,7 @@ static int read_huffman_data(struct bunzip_data *bd, struct bwdata *bw)
   }
 
   // Now we know what dbufCount is, do a better sanity check on origPtr.
-  if (bw->origPtr >= (bw->writeCount = dbufCount)) return RETVAL_DATA_ERROR;
+  if ((int)bw->origPtr >= (bw->writeCount = dbufCount)) return RETVAL_DATA_ERROR;
 
   return 0;
 }
@@ -449,6 +449,7 @@ static void flush_bunzip_outbuf(struct bunzip_data *bd, int out_fd)
 
 static void burrows_wheeler_prep(struct bunzip_data *bd, struct bwdata *bw)
 {
+  (void)bd;
   int ii, jj;
   unsigned int *dbuf = bw->dbuf;
   int *byteCount = bw->byteCount;
@@ -626,7 +627,7 @@ static int start_bunzip(struct bunzip_data **bdp, int src_fd, char *inbuf,
   crc_init(bd->crc32Table, 0);
 
   // Ensure that file starts with "BZh".
-  for (i=0;i<3;i++) if (get_bits(bd,8)!="BZh"[i]) return RETVAL_NOT_BZIP_DATA;
+  for (i=0;i<3;i++) if ((char)get_bits(bd,8)!="BZh"[i]) return RETVAL_NOT_BZIP_DATA;
 
   // Next byte ascii '1'-'9', indicates block size in units of 100k of
   // uncompressed data. Allocate intermediate buffer for block.
@@ -661,6 +662,7 @@ static char *bunzipStream(int src_fd, int dst_fd)
 
 static void do_bzcat(int fd, char *name)
 {
+  (void)name;
   char *err = bunzipStream(fd, 1);
 
   if (err) error_exit(err);

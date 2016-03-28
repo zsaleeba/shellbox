@@ -301,7 +301,7 @@ RETRY:
       if (!(prog = getenv("EDITOR")))
         prog = "vi";
     }
-    execlp(prog, prog, tname, (char *) NULL);
+    xexeclp(prog, prog, tname, (char *) NULL);
     perror_exit("can't execute '%s'", prog);
   }
 

@@ -433,6 +433,8 @@ showvars(const char *prefix, int on, int off)
 int
 exportcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	struct var *vp;
 	char *name;
 	const char *p;
@@ -467,6 +469,7 @@ exportcmd(int argc, char **argv)
 int
 localcmd(int argc, char **argv)
 {
+    (void)argc;
 	char *name;
 
 	if (!localvar_stack)
@@ -621,6 +624,8 @@ void unwindlocalvars(struct localvar_list *stop)
 int
 unsetcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	char **ap;
 	int i;
 	int flag = 0;

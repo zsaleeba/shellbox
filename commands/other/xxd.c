@@ -35,6 +35,7 @@ GLOBALS(
 
 static void do_xxd(int fd, char *name)
 {
+  (void)name;
   long long pos = 0;
   int i, len, space;
 

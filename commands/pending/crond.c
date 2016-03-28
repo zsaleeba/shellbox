@@ -421,7 +421,7 @@ static void scan_cronfiles()
  */
 static void do_fork(CRONFILE *cfile, JOB *job, int fd, char *prog)
 {
-  pid_t pid = vfork();
+  pid_t pid = xvfork();
 
   if (pid == 0) {
     VAR *v, *vstart = (VAR *)cfile->var;
@@ -455,7 +455,7 @@ static void do_fork(CRONFILE *cfile, JOB *job, int fd, char *prog)
         dup2(1, 2);
       }
       setpgrp();
-      execlp(file, file, (prog ? "-ti" : "-c"), (prog ? NULL : job->cmd), (char *) NULL);
+      xexeclp(file, file, (prog ? "-ti" : "-c"), (prog ? NULL : job->cmd), (char *) NULL);
       loginfo(LOG_ERROR, "can't execute '%s' for user %s", file, cfile->username);
 
       if (!prog) dprintf(1, "Exec failed: %s -c %s\n", file, job->cmd);

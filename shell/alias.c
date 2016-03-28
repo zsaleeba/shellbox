@@ -161,6 +161,8 @@ aliascmd(int argc, char **argv)
 int
 unaliascmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	int i;
 
 	while ((i = nextopt("a")) != '\0') {

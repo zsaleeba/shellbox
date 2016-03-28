@@ -202,7 +202,7 @@ static int new_session(int sockfd)
   write_issue(tty_name);
   argv_login[0] = strdup(TT.login_path);
   argv_login[1] = NULL;
-  execvp(argv_login[0], argv_login);
+  xexecvp(argv_login[0], argv_login);
   exit(EXIT_FAILURE);
 }
 

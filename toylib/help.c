@@ -24,7 +24,7 @@ void show_help(FILE *out)
     s = help_data;
     while (i--) s += strlen(s) + 1;
     // If it's an alias, restart search for real name
-    if (*s != 255) break;
+    if (*(unsigned char *)s != 255) break;
     if (!CFG_TOYBOX) {
       s = xmprintf("See %s --help\n", ++s);
 

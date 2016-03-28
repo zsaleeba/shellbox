@@ -15,6 +15,8 @@ config DIRNAME
     Show directory portion of path.
 */
 
+#include <libgen.h>
+
 #include "toys.h"
 
 void dirname_main(void)

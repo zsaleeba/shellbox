@@ -1540,6 +1540,7 @@ expandstr(const char *ps)
 const char *
 getprompt(void *unused)
 {
+    (void)unused;
 	const char *prompt;
 
 	switch (whichprompt) {

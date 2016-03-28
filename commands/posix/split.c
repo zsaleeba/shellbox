@@ -37,6 +37,7 @@ GLOBALS(
 
 static void do_split(int infd, char *in)
 {
+  (void)in;
   unsigned long bytesleft, linesleft, filenum, len, pos;
   int outfd = -1;
   struct stat st;
@@ -73,14 +74,14 @@ static void do_split(int infd, char *in)
 
     // Write next chunk of output.
     if (TT.lines) {
-      for (i = pos; i < len; ) {
+      for (i = pos; (unsigned long)i < len; ) {
         if (toybuf[i++] == '\n' && !--linesleft) break;
         if (!--bytesleft) break;
       }
       j = i - pos;
     } else {
       j = len - pos;
-      if (j > bytesleft) j = bytesleft;
+      if ((unsigned long)j > bytesleft) j = bytesleft;
       bytesleft -= j;
     }
     txwrite(outfd, toybuf+pos, j);

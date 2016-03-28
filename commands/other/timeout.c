@@ -39,6 +39,7 @@ GLOBALS(
 
 static void handler(int i)
 {
+  (void)i;
   fprintf(stderr, "timeout pid %d signal %d\n", TT.pid, TT.nextsig);
   kill(TT.pid, TT.nextsig);
   

@@ -41,8 +41,8 @@
 #endif
 #include <sys/types.h>
 #include <sys/param.h>
-#ifdef BSD
 #include <sys/wait.h>
+#ifdef BSD
 #include <sys/time.h>
 #include <sys/resource.h>
 #endif
@@ -68,6 +68,7 @@
 #include "error.h"
 #include "mystring.h"
 #include "system.h"
+#include "portability.h"
 
 /* mode flags for set_curjob */
 #define CUR_DELETE 2
@@ -343,6 +344,8 @@ jobno(const struct job *jp)
 int
 fgcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	struct job *jp;
 	struct output *out;
 	int mode;
@@ -427,7 +430,7 @@ sprint_status(char *s, int status, int sigonly)
 				goto out;
 #endif
 		}
-		col = fmtstr(s, 32, strsignal(st));
+		col = fmtstr(s, 32, "%s", strsignal(st));
 #ifdef WCOREDUMP
 		if (WCOREDUMP(status)) {
 			col += fmtstr(s + col, 16, " (core dumped)");
@@ -519,6 +522,7 @@ start:
 int
 jobscmd(int argc, char **argv)
 {
+    (void)argc;
 	int mode, m;
 	struct output *out;
 
@@ -591,6 +595,7 @@ freejob(struct job *jp)
 int
 waitcmd(int argc, char **argv)
 {
+    (void)argc;
 	struct job *job;
 	int retval;
 	struct job *jp;
@@ -747,6 +752,7 @@ err:
 struct job *
 makejob(union node *node, int nprocs)
 {
+    (void)node;
 	int i;
 	struct job *jp;
 
@@ -845,6 +851,7 @@ growjobtab(void)
 STATIC inline void
 forkchild(struct job *jp, union node *n, int mode)
 {
+    (void)n;
 	int oldlvl;
 
 	TRACE(("Child shell %d\n", getpid()));
@@ -931,7 +938,7 @@ forkshell(struct job *jp, union node *n, int mode)
 	int pid;
 
 	TRACE(("forkshell(%%%d, %p, %d) called\n", jobno(jp), n, mode));
-	pid = fork();
+	pid = xfork();
 	if (pid < 0) {
 		TRACE(("Fork failed, errno=%d", errno));
 		if (jp)

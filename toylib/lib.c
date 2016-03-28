@@ -122,12 +122,12 @@ off_t lskip(int fd, off_t offset)
   }
 
   while (offset>0) {
-    int try = offset>sizeof(libbuf) ? sizeof(libbuf) : offset, or;
+    size_t try_ = ((size_t)offset > sizeof(libbuf)) ? sizeof(libbuf) : (size_t)offset;
 
-    or = readall(fd, libbuf, try);
+    int or = readall(fd, libbuf, try_);
     if (or < 0) perror_exit("lskip to %lld", (long long)offset);
     else offset -= or;
-    if (or < try) break;
+    if ((size_t)or < try_) break;
   }
 
   return offset;
@@ -218,7 +218,7 @@ struct string_list *find_in_path(char *path, char *filename)
   cwd = xgetcwd();
   for (;;) {
     char *next = strchr(path, ':');
-    int len = next ? next-path : strlen(path);
+    size_t len = next ? (size_t)(next-path) : strlen(path);
     struct string_list *rnext;
     struct stat st;
 
@@ -457,7 +457,7 @@ int64_t peek_le(void *ptr, unsigned size)
 {
   int64_t ret = 0;
   char *c = ptr;
-  int i;
+  unsigned i;
 
   for (i=0; i<size; i++) ret |= ((int64_t)c[i])<<i;
 
@@ -573,6 +573,7 @@ int wfchmodat(int fd, char *name, mode_t mode)
 static char *tempfile2zap;
 static void tempfile_handler(int i)
 {
+  (void)i;
   if (1 < (long)tempfile2zap) unlink(tempfile2zap);
   _exit(1);
 }
@@ -732,7 +733,7 @@ int sig_to_num(char *pidstr)
 
     if (!strncasecmp(pidstr, "sig", 3)) pidstr+=3;
   }
-  for (i = 0; i < sizeof(signames)/sizeof(struct signame); i++)
+  for (i = 0; i < (int)(sizeof(signames)/sizeof(struct signame)); i++)
     if (!pidstr) xputs(signames[i].name);
     else if (!strcasecmp(pidstr, signames[i].name)) return signames[i].num;
 
@@ -743,7 +744,7 @@ char *num_to_sig(int sig)
 {
   int i;
 
-  for (i=0; i<sizeof(signames)/sizeof(struct signame); i++)
+  for (i=0; i < (int)(sizeof(signames)/sizeof(struct signame)); i++)
     if (signames[i].num == sig) return signames[i].name;
   return NULL;
 }
@@ -845,9 +846,9 @@ void mode_to_string(mode_t mode, char *buf)
     bit = mode & (1<<i);
     c = i%3;
     if (!c && (mode & (1<<((d=i/3)+9)))) {
-      c = "tss"[d];
+      c = "tss"[(int)d];
       if (!bit) c &= ~0x20;
-    } else c = bit ? "xwr"[c] : '-';
+    } else c = bit ? "xwr"[(int)c] : '-';
     buf[9-i] = c;
   }
 

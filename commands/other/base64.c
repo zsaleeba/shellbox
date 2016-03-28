@@ -28,6 +28,7 @@ GLOBALS(
 
 static void do_base64(int fd, char *name)
 {
+  (void)name;
   int out = 0, bits = 0, x = 0, i, len;
   char *buf = toybuf+128;
 

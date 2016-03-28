@@ -173,7 +173,7 @@ void netcat_main(void)
         else {
           if (toys.optflags&FLAG_L) {
             toys.stacktop = 0;
-            child = vfork();
+            child = xvfork();
           }
           if (!child && toys.optc) {
             int fd = pollfds[0].fd;

@@ -56,7 +56,7 @@ static void get_vmstat_proc(struct vmstat_proc *vmstat_proc)
   //   Any other string is a key to search for, with decimal value right after
   //   0 means parse another value on same line as last key
 
-  for (i = 0; i<sizeof(vmstuff)/sizeof(char *); i++) {
+  for (i = 0; i<(int)(sizeof(vmstuff)/sizeof(char *)); i++) {
     if (!vmstuff[i]) p++;
     else if (*vmstuff[i] == '/') {
       xreadfile(name = vmstuff[i], toybuf, sizeof(toybuf));
@@ -89,7 +89,7 @@ void vmstat_main(void)
   if (toys.optc) loop_delay = atolx_range(toys.optargs[0], 0, INT_MAX);
   if (toys.optc > 1) loop_max = atolx_range(toys.optargs[1], 1, INT_MAX) - 1;
 
-  for (loop = 0; !loop_max || loop <= loop_max; loop++) {
+  for (loop = 0; !loop_max || loop <= (unsigned)loop_max; loop++) {
     unsigned idx = loop&1, offset = 0, expected = 0;
     uint64_t units, total_hz, *ptr = (uint64_t *)(top+idx),
              *oldptr = (uint64_t *)(top+!idx);
@@ -104,7 +104,7 @@ void vmstat_main(void)
       else rows = 0;
 
       printf("procs -----------memory---------- ---swap-- -----io---- -system-- ----cpu----\n");
-      for (i=0; i<sizeof(lengths); i++) {
+      for (i=0; i<(int)sizeof(lengths); i++) {
         printf(" %*s"+!i, lengths[i], header);
         header += strlen(header)+1;
       }
@@ -136,13 +136,13 @@ void vmstat_main(void)
     // Output values in order[]: running, blocked, swaptotal, memfree, buffers,
     // cache, swap_in, swap_out, io_in, io_out, sirq, ctxt, user, sys, idle,wait
 
-    for (i=0; i<sizeof(lengths); i++) {
+    for (i=0; i<(int)sizeof(lengths); i++) {
       char order[] = {9, 10, 15, 11, 12, 13, 18, 19, 16, 17, 6, 8, 0, 2, 3, 4};
-      uint64_t out = ptr[order[i]];
+      uint64_t out = ptr[(int)order[i]];
       int len;
 
       // Adjust rate and units
-      if (i>5) out -= oldptr[order[i]];
+      if (i>5) out -= oldptr[(int)order[i]];
       if (order[i]<7) out = ((out*100) + (total_hz/2)) / total_hz;
       else if (order[i]>17) out = ((out * page_kb)+(units-1))/units;
       else if (order[i]>15) out = ((out)+(units-1))/units;

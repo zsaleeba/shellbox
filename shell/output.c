@@ -301,12 +301,12 @@ doformat(struct output *dest, const char *f, va_list ap)
 		dest->flags |= OUTPUT_ERR;
 		return;
 	}
-	if (len < size) {
+	if ((size_t)len < size) {
 		dest->nextc += len;
 		return;
 	}
 	setstackmark(&smark);
-	s = stalloc((len >= stackblocksize() ? len : stackblocksize()) + 1);
+	s = stalloc(((size_t)len >= stackblocksize() ? (size_t)len : stackblocksize()) + 1);
 	ret = xvsnprintf(s, len + 1, f, ap);
 	if (ret == len)
 		__outstr(s, len, dest);

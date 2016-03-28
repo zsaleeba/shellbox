@@ -17,6 +17,7 @@ config TAC
 
 static void do_tac(int fd, char *name)
 {
+  (void)name;
   struct arg_list *list = NULL;
   char *c;
 

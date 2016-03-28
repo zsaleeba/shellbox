@@ -137,6 +137,8 @@ readcmd_handle_line(char *s, char **ap)
 int
 readcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	char **ap;
 	char c;
 	int rflag;
@@ -229,6 +231,8 @@ out:
 int
 umaskcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	char *ap;
 	int mask;
 	int i;

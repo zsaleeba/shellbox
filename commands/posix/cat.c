@@ -67,7 +67,7 @@ static void do_cat(int fd, char *name)
         char c=toybuf[i];
 
         if (c > 126 && (toys.optflags & FLAG_v)) {
-          if (c > 127) {
+          if ((unsigned char)c > 127) {
             printf("M-");
             c -= 128;
           }

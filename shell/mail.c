@@ -108,5 +108,6 @@ chkmail(void)
 void
 changemail(const char *val)
 {
+    (void)val;
 	changed++;
 }

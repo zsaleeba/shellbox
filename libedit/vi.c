@@ -1025,13 +1025,13 @@ vi_histedit(EditLine *el, Int c __attribute__((__unused__)))
 	len = strlen(cp);
 	write(fd, cp, len);
 	write(fd, "\n", (size_t)1);
-	pid = fork();
+	pid = xfork();
 	switch (pid) {
 	case -1:
 		goto error;
 	case 0:
 		close(fd);
-		execlp("vi", "vi", tempfile, (char *)NULL);
+		xexeclp("vi", "vi", tempfile, (char *)NULL);
 		exit(0);
 		/*NOTREACHED*/
 	default:

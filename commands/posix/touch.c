@@ -27,6 +27,7 @@ config TOUCH
 
 #define FOR_touch
 #include "toys.h"
+#include "xfuncs.h"
 
 GLOBALS(
   char *time;
@@ -78,7 +79,7 @@ void touch_main(void)
     } else {
       strcpy(toybuf, "%Y%m%d%H%M");
       date = TT.time;
-      i = ((s = strchr(date, '.'))) ? s-date : strlen(date);
+      i = ((s = strchr(date, '.'))) ? s-date : (int)strlen(date);
       if (i < 8 || i%2) error_exit("bad '%s'", date);
       for (i=0;i<3;i++) {
         s = strptime(date, toybuf+(i&2), &tm);

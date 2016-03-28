@@ -40,6 +40,7 @@
 
 int xutimensat(int dirfd, const char *pathname, const struct timespec times[2], int flags)
 {
+    (void)flags;
 	int cfd, ret, error, i;
 	struct timeval tvs[2];
 
@@ -75,6 +76,8 @@ int xutimensat(int dirfd, const char *pathname, const struct timespec times[2], 
 
 int xfutimens(int fd, const struct timespec times[2])
 {
+    (void)fd;
+    (void)times;
 	errno = EINVAL;
 	return -1;
 }

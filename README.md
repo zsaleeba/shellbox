@@ -1,6 +1,6 @@
 shellbox is a shell with built-in commands. It can give your project a UNIX-like personality when you don't have UNIX or linux available. It was originally designed to be used for embedded systems where you don't have a full OS but you'd like to be able to use a UNIX-like shell anyway. It has the functionality of a full Bourne shell including fast shell scripting and many standard commands, all within a relatively simple structure which can be easily added to your project.
 
-shellbox is designed for modern embedded systems with >1MB of FLASH and RAM plus a usable filesystem and a fairly complete C library implementation. Since many embedded system don't have the ability to exec() programs off the filesystem it doesn't require a working exec() or fork() call.
+shellbox is designed for modern embedded systems with >4MB of FLASH and RAM plus a usable filesystem and a fairly complete C library implementation. Since many embedded system don't have the ability to exec() programs off the filesystem it doesn't require a working exec() or fork() call.
 
 shellbox is based in part on the dash shell, toybox command line utilities and the libedit command line editor. It's currently under development and is not suitable for use.
 

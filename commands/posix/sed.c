@@ -441,7 +441,7 @@ static void walk_pattern(char **pline, long plen)
       }
 
       for (i = off = 0; i<len; i++) {
-        if (off >= TT.xx) {
+        if (off >= (int)TT.xx) {
           toybuf[off++] = '\\';
           emit(toybuf, off, 1);
           off = 0;
@@ -653,6 +653,7 @@ done:
 // otherwise line is freed. Passed file descriptor is closed at the end.
 static void do_lines(int fd, char *name, void (*call)(char **pline, long len))
 {
+  (void)name;
   FILE *fp = fd ? xfdopen(fd, "r") : stdin;
 
   for (;;) {
@@ -704,6 +705,7 @@ static void do_sed(int fd, char *name)
 // if regxex, ignore delimiter in [ranges]
 static char *unescape_delimited_string(char **pstr, char *delim, int regex)
 {
+  (void)regex;
   char *to, *from, mode = 0, d;
 
   to = from = *pstr;
@@ -856,7 +858,7 @@ resume_s:
       // get replacement - don't replace escapes because \1 and \& need
       // processing later, after we replace \\ with \ we can't tell \\1 from \1
       fiona = line;
-      while (*fiona != corwin->hit) {
+      while ((unsigned)*fiona != corwin->hit) {
         if (!*fiona) goto brand;
         if (*fiona++ == '\\') {
           if (!*fiona || *fiona == '\n') {
@@ -870,7 +872,7 @@ resume_s:
       reg = extend_string((void *)&corwin, line, reg-(char *)corwin,fiona-line);
       line = fiona;
       // line continuation? (note: '\n' can't be a valid delim).
-      if (*line == corwin->hit) corwin->hit = 0;
+      if ((unsigned)*line == corwin->hit) corwin->hit = 0;
       else {
         if (!*line) continue;
         reg--;
@@ -949,7 +951,7 @@ writenow:
       free(s);
       corwin->arg2 = reg-(char *)corwin;
       if (!(s = unescape_delimited_string(&line, &delim, 0))) goto brand;
-      if (len != strlen(s)) goto brand;
+      if (len != (int)strlen(s)) goto brand;
       reg = extend_string((void *)&corwin, s, reg-(char*)corwin, len);
       free(s);
     } else if (strchr("abcirtTw:", c)) {

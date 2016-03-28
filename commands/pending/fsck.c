@@ -222,7 +222,7 @@ static void do_fsck(struct f_sys_info *finfo)
     free(args);
     return;
   } else { 
-    if ((pid = fork()) < 0) {
+    if ((pid = xfork()) < 0) {
       perror_msg(args[0]);
       for (j=0;j<i;j++) free(args[i]);
       free(args);

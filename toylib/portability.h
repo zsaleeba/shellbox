@@ -260,6 +260,7 @@ typedef float FLOAT;
 
 #ifndef __uClinux__
 pid_t xfork(void);
+pid_t xvfork(void);
 #endif
 
 #ifndef major

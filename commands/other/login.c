@@ -160,6 +160,6 @@ void login_main(void)
     ttyname(tty), hh ? "from" : "", hh ? TT.hostname : "");
 
   // not using xexec(), login calls absolute path from filesystem so must exec()
-  execl(pwd->pw_shell, xmprintf("-%s", pwd->pw_shell), (char *)0);
+  xexecl(pwd->pw_shell, xmprintf("-%s", pwd->pw_shell), (char *)0);
   perror_exit("exec shell '%s'", pwd->pw_shell);
 }

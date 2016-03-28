@@ -546,13 +546,13 @@ static void run_script(dhcpc_result_t *res,  char *name)
   argv[2] = NULL;
   fflush(NULL);
 
-  pid = vfork();
+  pid = xvfork();
   if (pid < 0) {
     dbg("Fork failed.\n");
     return;
   }
   if (!pid) {
-    execvp(argv[0], argv);
+    xexecvp(argv[0], argv);
     error = errno;
     _exit(111);
   }

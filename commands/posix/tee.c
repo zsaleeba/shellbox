@@ -35,6 +35,7 @@ struct fd_list {
 
 static void do_tee_open(int fd, char *name)
 {
+  (void)name;
   struct fd_list *temp;
 
   temp = xmalloc(sizeof(struct fd_list));

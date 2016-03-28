@@ -65,6 +65,7 @@ static inline char *lsm_context(void)
 // Set default label to apply to newly created stuff (NULL to clear it)
 static inline int lsm_set_create(char *context)
 {
+  (void)context;
   if (CFG_TOYBOX_SMACK) return smack_set_label_for_self(context);
   else return setfscreatecon(context);
 }
@@ -72,6 +73,8 @@ static inline int lsm_set_create(char *context)
 // Label a file, following symlinks
 static inline int lsm_set_context(char *filename, char *context)
 {
+  (void)filename;
+  (void)context;
   if (CFG_TOYBOX_SMACK)
     return smack_set_label_for_path(filename, XATTR_NAME_SMACK, 1, context);
   else return setfilecon(filename, context);
@@ -80,6 +83,8 @@ static inline int lsm_set_context(char *filename, char *context)
 // Label a file, don't follow symlinks
 static inline int lsm_lset_context(char *filename, char *context)
 {
+  (void)filename;
+  (void)context;
   if (CFG_TOYBOX_SMACK)
     return smack_set_label_for_path(filename, XATTR_NAME_SMACK, 0, context);
   else return lsetfilecon(filename, context);
@@ -88,6 +93,8 @@ static inline int lsm_lset_context(char *filename, char *context)
 // Label a file by filehandle
 static inline int lsm_fset_context(int file, char *context)
 {
+  (void)file;
+  (void)context;
   if (CFG_TOYBOX_SMACK)
     return smack_set_label_for_file(file, XATTR_NAME_SMACK, context);
   else return fsetfilecon(file, context);
@@ -97,6 +104,8 @@ static inline int lsm_fset_context(int file, char *context)
 // context can be NULL to get the length only */
 static inline int lsm_get_context(char *filename, char **context)
 {
+  (void)filename;
+  (void)context;
   if (CFG_TOYBOX_SMACK)
     return smack_new_label_from_path(filename, XATTR_NAME_SMACK, 1, context);
   else return getfilecon(filename, context);
@@ -104,6 +113,8 @@ static inline int lsm_get_context(char *filename, char **context)
 
 static inline int lsm_lget_context(char *filename, char **context)
 {
+  (void)filename;
+  (void)context;
   if (CFG_TOYBOX_SMACK)
     return smack_new_label_from_path(filename, XATTR_NAME_SMACK, 0, context);
   else return lgetfilecon(filename, context);
@@ -111,6 +122,8 @@ static inline int lsm_lget_context(char *filename, char **context)
 
 static inline int lsm_fget_context(int file, char **context)
 {
+  (void)file;
+  (void)context;
   if (CFG_TOYBOX_SMACK)
     return smack_new_label_from_file(file, XATTR_NAME_SMACK, context);
   return fgetfilecon(file, context);

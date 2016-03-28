@@ -949,6 +949,7 @@ cmddone:
 STATIC int
 evaltoycmd(const struct toy_list *cmd, int argc, char **argv, int flags)
 {
+    (void)flags;
 	char *volatile savecmdname;
 	struct jmploc *volatile savehandler;
 	struct jmploc jmploc;
@@ -967,7 +968,7 @@ evaltoycmd(const struct toy_list *cmd, int argc, char **argv, int flags)
 	commandname = argv[0];
 	argptr = argv + 1;
 	optptr = NULL;			/* initialize nextopt */
-	status = toy_run(cmd, argv);
+	status = toy_run((struct toy_list *)cmd, argv);
 	flushall();
 	status |= outerr(out1);
 	exitstatus = status;
@@ -1053,6 +1054,8 @@ prehash(union node *n)
 STATIC int
 bltincmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	/*
 	 * Preserve exitstatus of a previous possible redirection
 	 * as POSIX mandates
@@ -1096,6 +1099,7 @@ breakcmd(int argc, char **argv)
 int
 returncmd(int argc, char **argv)
 {
+    (void)argc;
 	/*
 	 * If called outside a function, do what ksh does;
 	 * skip the rest of the file.
@@ -1108,6 +1112,8 @@ returncmd(int argc, char **argv)
 int
 falsecmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	return 1;
 }
 
@@ -1115,6 +1121,8 @@ falsecmd(int argc, char **argv)
 int
 truecmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	return 0;
 }
 
@@ -1122,6 +1130,8 @@ truecmd(int argc, char **argv)
 int
 execcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	if (argc > 1) {
 		iflag = 0;		/* exit on error */
 		mflag = 0;

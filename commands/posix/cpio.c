@@ -252,7 +252,7 @@ void cpio_main(void)
             txwrite(afd, toybuf, llen);
           else perror_msg("readlink '%s'", name);
         } else while (llen) {
-          nlen = llen > sizeof(toybuf) ? sizeof(toybuf) : llen;
+          nlen = llen > (ssize_t)sizeof(toybuf) ? sizeof(toybuf) : (unsigned)llen;
           llen -= nlen;
           // If read fails, write anyway (already wrote size in header)
           if (nlen != readall(fd, toybuf, nlen))

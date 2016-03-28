@@ -575,6 +575,7 @@ scanleft(
 	char *startp, char *rmesc, char *rmescend, char *str, int quotes,
 	int zero
 ) {
+    (void)rmescend;
 	char *loc;
 	char *loc2;
 	char c;
@@ -1201,6 +1202,7 @@ STATIC char *expdir;
 STATIC void
 expandmeta(struct strlist *str, int flag)
 {
+    (void)flag;
 	static const char metachars[] = {
 		'*', '?', '[', 0
 	};

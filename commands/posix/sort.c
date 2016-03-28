@@ -103,7 +103,7 @@ static char *get_key_data(char *str, struct sort_key *key, int flags)
     // Loop through fields
     else {
       end=0;
-      for (i=1; i < key->range[2*j]+j; i++) {
+      for (i=1; i < (int)key->range[2*j]+j; i++) {
 
         // Skip leading blanks
         if (str[end] && !TT.key_separator)
@@ -241,7 +241,7 @@ static int compare_keys(const void *xarg, const void *yarg)
     for (key=(struct sort_key *)TT.key_list; !retval && key;
        key = key->next_key)
     {
-      flags = key->flags ? key->flags : toys.optflags;
+      flags = key->flags ? key->flags : (int)toys.optflags;
 
       // Chop out and modify key chunks, handling -dfib
 

@@ -33,7 +33,7 @@ GLOBALS(
 static void draw_char(char broiled)
 {
   if (broiled<32 || broiled>=127) {
-    if (broiled>127) {
+    if ((unsigned char)broiled>127) {
       tty_esc("2m");
       broiled &= 127;
     }
@@ -103,7 +103,7 @@ static void draw_page(void)
   int y;
 
   tty_jump(0, 0);
-  for (y = 0; y<TT.height; y++) {
+  for (y = 0; y<(int)TT.height; y++) {
     if (y) printf("\r\n");
     draw_line(y);
   }
@@ -211,7 +211,7 @@ void hexedit_main(void)
 
         ll[TT.undo] = pos;
         toybuf[(sizeof(long long)*UNDO_LEN)+TT.undo++] = TT.data[pos];
-        if (TT.undolen < UNDO_LEN) TT.undolen++;
+        if (TT.undolen < (int)UNDO_LEN) TT.undolen++;
         TT.undo %= UNDO_LEN;
       }
 

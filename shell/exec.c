@@ -224,6 +224,8 @@ padvance(const char **path, const char *name)
 int
 hashcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	struct tblentry **pp;
 	struct tblentry *cmdp;
 	int c;
@@ -844,6 +846,8 @@ commandcmd(argc, argv)
 	int argc;
 	char **argv;
 {
+    (void)argc;
+    (void)argv;
 	char *cmd;
 	int c;
 	enum {

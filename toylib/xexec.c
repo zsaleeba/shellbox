@@ -7,6 +7,8 @@
  * Copyright 2006 Rob Landley <rob@landley.net>
  */
 
+#include <assert.h>
+
 #include "toys.h"
 #include "xfuncs.h"
 
@@ -23,6 +25,12 @@ pid_t xvforkwrap(pid_t pid)
   toys.stacktop = 0;
 
   return pid;
+}
+
+pid_t xvfork()
+{
+  assert(/* vfork() is disabled. */ 0);
+  return 0;
 }
 
 // Die unless we can exec argv[] (or run builtin command).  Note that anything
@@ -44,6 +52,7 @@ void xexec(char **argv)
   }
   else
   {
+    assert(/* exec is disabled. */ 0);
     execvp(argv[0], argv);
   
     perror_msg("exec %s", argv[0]);
@@ -51,6 +60,42 @@ void xexec(char **argv)
     if (!CFG_TOYBOX_FORK) _exit(toys.exitval);
     xexit();
   }
+}
+
+int xexecl(const char *path, const char *arg, ...)
+{
+  (void)path;
+  (void)arg;
+  assert(/* exec is disabled. */ 0);
+  errno = ENOSYS;
+  return -1;
+}
+
+int xexeclp(const char *file, const char *arg, ...)
+{
+  (void)file;
+  (void)arg;
+  assert(/* exec is disabled. */ 0);
+  errno = ENOSYS;
+  return -1;
+}
+
+int xexecv(const char *path, char *const argv[])
+{
+  (void)path;
+  (void)argv;
+  assert(/* exec is disabled. */ 0);
+  errno = ENOSYS;
+  return -1;
+}
+
+int xexecvp(const char *file, char *const argv[])
+{
+  (void)file;
+  (void)argv;
+  assert(/* exec is disabled. */ 0);
+  errno = ENOSYS;
+  return -1;
 }
 
 // Spawn child process, capturing stdin/stdout.
@@ -109,7 +154,7 @@ pid_t xpopen_both(char **argv, int *pipes)
       // We did a nommu-friendly vfork but must exec to continue.
       // setting high bit of argv[0][0] to let new process know
       **toys.argv |= 0x80;
-      execv(s, toys.argv);
+      xexecv(s, toys.argv);
       perror_msg(s);
 
       _exit(127);

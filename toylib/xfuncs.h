@@ -19,6 +19,7 @@ int xmkdirat(int dirfd, const char *pathname, mode_t mode);
 int xopenat(int fd, const char *path, int flags, ...);
 int xfchmodat(int dirfd, const char *pathname, mode_t mode, int flags);
 int xreadlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz);
+int xlinkat(int olddirfd, const char *oldpath, int newdirfd, const char *newpath, int flags);
 int xunlinkat(int dirfd, const char *pathname, int flags);
 int xfchownat(int dirfd, const char *pathname, uid_t owner, gid_t group, int flags);
 int xsymlinkat(const char *oldpath, int newdirfd, const char *newpath);

@@ -76,6 +76,7 @@ static char  **gargv;
 
 int printfcmd(int argc, char *argv[])
 {
+    (void)argc;
 	char *fmt;
 	char *format;
 	int ch;
@@ -440,6 +441,7 @@ check_conversion(const char *s, const char *ep)
 int
 echocmd(int argc, char **argv)
 {
+    (void)argc;
 	int nonl = 0;
 	struct output *outs = out1;
 

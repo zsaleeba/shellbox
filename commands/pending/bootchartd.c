@@ -302,9 +302,9 @@ void bootchartd_main()
   if (!bchartd_opt) { 
     char *pbchart_init = getenv("bootchart_init");
 
-    if (pbchart_init) execl(pbchart_init, pbchart_init, NULL);
-    execl("/init", "init", (void *)0);
-    execl("/sbin/init", "init", (void *)0);
+    if (pbchart_init) xexecl(pbchart_init, pbchart_init, NULL);
+    xexecl("/init", "init", (void *)0);
+    xexecl("/sbin/init", "init", (void *)0);
   }
   if (bchartd_opt == 1 && toys.optargs[1]) { 
     pid_t prog_pid;

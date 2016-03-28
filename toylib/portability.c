@@ -4,6 +4,8 @@
  * Copyright 2012 Georgi Chorbadzhiyski <gf@unixsol.org>
  */
 
+#include <assert.h>
+
 #include "toys.h"
 
 // We can't fork() on nommu systems, and vfork() requires an exec() or exit()
@@ -22,6 +24,7 @@
 #if CFG_TOYBOX_FORK
 pid_t xfork(void)
 {
+        assert(/* fork() is disallowed */ 0);
   pid_t pid = fork();
 
   if (pid < 0) perror_exit("fork");
@@ -51,7 +54,7 @@ ssize_t xgetdelim(char **linep, size_t *np, int delim, FILE *stream)
   line = *linep;
 
   while ((ch = getc(stream)) != EOF) {
-    if (i > *np) {
+    if (i > (ssize_t)*np) {
       // Need more space
       new_len = *np + 1024;
       new_line = realloc(*linep, new_len);
@@ -65,7 +68,7 @@ ssize_t xgetdelim(char **linep, size_t *np, int delim, FILE *stream)
     i += 1;
   }
 
-  if (i > *np) {
+  if (i > (ssize_t)*np) {
     // Need more space
     new_len  = i + 2;
     new_line = realloc(*linep, new_len);

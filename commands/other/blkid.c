@@ -72,11 +72,11 @@ static void do_blkid(int fd, char *name)
     if (len != sizeof(toybuf)) return;
 
     // Iterate through types in range
-    for (i=0; i < sizeof(fstypes)/sizeof(struct fstype); i++) {
+    for (i=0; (size_t)i < sizeof(fstypes)/sizeof(struct fstype); i++) {
       uint64_t test;
 
       // Skip tests not in this 4k block
-      if (fstypes[i].magic_offset > off+sizeof(toybuf)) {
+      if (fstypes[i].magic_offset > off+(int)sizeof(toybuf)) {
         pass++;
         continue;
       }
@@ -138,7 +138,8 @@ void blkid_main(void)
 {
   if (*toys.optargs) loopfiles(toys.optargs, do_blkid);
   else {
-    unsigned int ma, mi, sz, fd;
+    unsigned int ma, mi, sz;
+    int fd;
     char *name = toybuf, *buffer = toybuf+1024, device[32];
     FILE *fp = xfopen("/proc/partitions", "r");
 

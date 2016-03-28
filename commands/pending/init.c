@@ -218,7 +218,7 @@ static void run_command(char *command)
     final_command[3] = NULL;
   }
   if (hyphen) ioctl(0, TIOCSCTTY, 0);
-  execvp(command, final_command);
+  xexecvp(command, final_command);
   error_msg("unable to run %s",command);
 }
 
@@ -231,8 +231,8 @@ static pid_t final_run(struct action_list_seed *x)
 
   sigfillset(&signal_set);
   sigprocmask(SIG_BLOCK, &signal_set, NULL);
-  if (x->action & ASKFIRST) pid = fork();
-  else pid = vfork();
+  if (x->action & ASKFIRST) pid = xfork();
+  else pid = xvfork();
 
   if (pid > 0) {
     //parent process or error
@@ -356,7 +356,7 @@ static void halt_poweroff_reboot_handler(int sig_no)
   }
 
   sleep(1);
-  pid = vfork();
+  pid = xvfork();
 
   if (pid == 0) {
     reboot(reboot_magic_no);
@@ -384,7 +384,7 @@ static void restart_init_handler(int sig_no)
       if (fd != 0) {
         error_msg("Unable to open %s,%s\n", x->terminal_name, strerror(errno));
         sleep(1);
-        pid = vfork();
+        pid = xvfork();
 
         if (pid == 0) {
           reboot(RB_HALT_SYSTEM);

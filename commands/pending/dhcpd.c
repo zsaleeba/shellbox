@@ -1177,13 +1177,13 @@ static void run_notify(char **argv)
   }
   fflush(NULL);
 
-  pid = vfork();
+  pid = xvfork();
   if (pid < 0) {
     dbg("Fork failed.\n");
     return;
   }
   if (!pid) {
-    execvp(argv[0], argv);
+    xexecvp(argv[0], argv);
     error = errno;
     _exit(111);
   }

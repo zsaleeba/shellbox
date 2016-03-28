@@ -16,7 +16,7 @@ int get_salt(char *salt, char *algo)
   } al[] = {{"des", 0, 2}, {"md5", 1, 8}, {"sha256", 5, 16}, {"sha512", 6, 16}};
   int i;
 
-  for (i = 0; i < ARRAY_LEN(al); i++) {
+  for (i = 0; i < (int)ARRAY_LEN(al); i++) {
     if (!strcmp(algo, al[i].type)) {
       int len = al[i].len;
       char *s = salt;

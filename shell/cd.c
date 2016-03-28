@@ -89,6 +89,8 @@ cdopt()
 int
 cdcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	const char *dest;
 	const char *path;
 	const char *p;
@@ -271,6 +273,8 @@ getpwd()
 int
 pwdcmd(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
 	int flags;
 	const char *dir = curdir;
 

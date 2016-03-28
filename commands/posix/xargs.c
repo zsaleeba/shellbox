@@ -87,7 +87,7 @@ static char *handle_entries(char *data, char **entry)
       }
       if (TT.eofstr) {
         int len = s-save;
-        if (len == strlen(TT.eofstr) && !strncmp(save, TT.eofstr, len))
+        if (len == (int)strlen(TT.eofstr) && !strncmp(save, TT.eofstr, len))
           return (char *)2;
       }
       if (entry) entry[TT.entries] = save;
